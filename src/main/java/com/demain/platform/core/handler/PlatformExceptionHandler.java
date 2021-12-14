@@ -1,0 +1,75 @@
+package com.demain.platform.core.handler;
+
+import com.demain.platform.core.exception.PlatformException;
+import com.demain.platform.core.util.Result;
+import com.demain.platform.core.util.ResultEnum;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
+
+
+@Slf4j
+@RestControllerAdvice
+public class PlatformExceptionHandler {
+
+    /**
+     * 全局异常捕捉处理
+     */
+    @ExceptionHandler(value = {Exception.class})
+    public Result handlerException(Exception exception, HttpServletRequest request) {
+        log.error("请求路径uri={},系统内部出现异常:{}", request.getRequestURI(), exception);
+        Result result = Result.error(ResultEnum.INTERNAL_SERVER_ERROR, exception.getLocalizedMessage());
+        return result;
+    }
+
+
+    /**
+     * 自定义异常-PlatformException
+     */
+    @ExceptionHandler(value = {PlatformException.class})
+    public Result handlerCustomException(PlatformException exception, HttpServletRequest request) {
+        log.error("请求路径uri={},出现异常:{}", request.getRequestURI(), exception);
+        String errorMessage = exception.getMsg();
+        Result result = Result.error(exception.getCode(), errorMessage);
+        return result;
+    }
+
+    /**
+     * 自定义validation异常-PlatformException
+     *
+     * BindException（@Validated @Valid仅对于表单提交有效，对于以json格式提交将会失效）
+     */
+    @ExceptionHandler(value = {BindException.class})
+    public Result handlerValidationException(BindException exception, HttpServletRequest request) {
+        log.error("请求路径uri={},出现异常:{}", request.getRequestURI(), exception);
+        System.out.println(exception);
+        String errorMessage = exception.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(";"));
+        Result result = Result.error(ResultEnum.PARAMETER_VALIDATION_FAIL, errorMessage);
+        return result;
+    }
+
+    /**
+     *  MethodArgumentNotValidException（@Validated @Valid 前端提交的方式为json格式有效，出现异常时会被该异常类处理）
+     * @param exception
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public Result handlerMethodArgumentNotValidException(MethodArgumentNotValidException exception, HttpServletRequest request) {
+        log.error("请求路径uri={},出现异常:{}", request.getRequestURI(), exception);
+        System.out.println(exception);
+        BindingResult bindingResult = exception.getBindingResult();
+        ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
+        String messages = objectError.getDefaultMessage();
+        Result result = Result.error(ResultEnum.PARAMETER_VALIDATION_FAIL.getCode(), messages);
+        return result;
+    }
+}
