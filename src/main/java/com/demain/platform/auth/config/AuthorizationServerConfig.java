@@ -1,6 +1,9 @@
 package com.demain.platform.auth.config;
 
 import com.demain.platform.auth.enhancer.CustomTokenEnhancer;
+import com.demain.platform.auth.exception.oauth.OAuthServerAuthenticationEntryPoint;
+import com.demain.platform.auth.exception.oauth.OAuthServerWebResponseExceptionTranslator;
+import com.demain.platform.auth.filter.OAuthServerClientCredentialsTokenEndpointFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,11 +48,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final CustomTokenEnhancer customTokenEnhancer;
 
+    private final OAuthServerAuthenticationEntryPoint authenticationEntryPoint;
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+
+        //自定义ClientCredentialsTokenEndpointFilter，用于处理客户端id，密码错误的异常
+        OAuthServerClientCredentialsTokenEndpointFilter endpointFilter = new OAuthServerClientCredentialsTokenEndpointFilter(security,authenticationEntryPoint);
+        endpointFilter.afterPropertiesSet();
+        security.addTokenEndpointAuthenticationFilter(endpointFilter);
+
+
         security
+                .authenticationEntryPoint(authenticationEntryPoint)
                 // 允许客户端表单认证
-                .allowFormAuthenticationForClients()
+//                .allowFormAuthenticationForClients()
                 // 开启端⼝/oauth/token_key的访问权限（允许）
                 .tokenKeyAccess("permitAll()")
                 // 开启端⼝/oauth/check_token的访问权限（允许）
@@ -72,6 +85,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Override
+    @SuppressWarnings("ALL")
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
@@ -85,6 +99,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenStore(tokenStore())
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .tokenEnhancer(tokenEnhancerChain)
+                .exceptionTranslator(new OAuthServerWebResponseExceptionTranslator())
         ;
     }
 
