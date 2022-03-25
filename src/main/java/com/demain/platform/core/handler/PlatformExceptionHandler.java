@@ -5,6 +5,9 @@ import com.demain.platform.core.util.Result;
 import com.demain.platform.core.util.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
+import org.springframework.security.oauth2.common.exceptions.UnsupportedGrantTypeException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -72,4 +75,22 @@ public class PlatformExceptionHandler {
         Result result = Result.error(ResultEnum.PARAMETER_VALIDATION_FAIL.getCode(), messages);
         return result;
     }
+
+    /**
+     * OAuth2Exception 异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = OAuth2Exception.class)
+    public Result handleOauth2(OAuth2Exception e) {
+        ResultEnum resultEnum = ResultEnum.UNAUTHORIZED;
+        if(e instanceof UnsupportedGrantTypeException){
+            resultEnum = ResultEnum.UNSUPPORTED_GRANT_TYPE;
+            //用户名或密码异常
+        }else if(e instanceof InvalidGrantException){
+            resultEnum = ResultEnum.ACCOUNT_PASSWORD_IS_ERROR;
+        }
+        return Result.error(resultEnum.getCode(),resultEnum.getMsg());
+    }
+
 }
