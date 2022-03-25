@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 用于处理客户端认证出错，包括客户端id、密码错误
+ * @author: 明天
+ * @date: 2022/3/25 10:20
+ */
 @Component
 public class OAuthServerAuthenticationEntryPoint implements AuthenticationEntryPoint {
 

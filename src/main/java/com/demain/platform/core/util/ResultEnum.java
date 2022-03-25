@@ -38,22 +38,15 @@ public enum ResultEnum {
     // 业务
 
     //--- 权限验证返回码 1xxx ---
-    UNSUPPORTED_GRANT_TYPE(1101,"不支持的认证方式"),
-    ACCOUNT_PASSWORD_IS_ERROR(1102,"账号或密码错误"),
-    CLIENT_AUTHENTICATION_FAILED(1103,"客户端认证失败"),
-
-    TOKEN_INVALID(1001,"凭证无效"),
-    PLAYAUTH_FAIL(1002,"获取凭证失败"),
-
-    ACCOUNT_NOT_EXIST(1004,"账号不存在"),
-    PASSWORD_CHECK_FAIL(1005,"密码校验失败"),
-    LOGIN_FAIL(1006,"登录失败"),
-    ACCOUNT_DISABLE(1007,"账号被禁用"),
-    UN_AUTHORISE(1008,"权限不足"),
+    UNSUPPORTED_GRANT_TYPE(1001,"不支持的认证方式"),
+    ACCOUNT_PASSWORD_IS_ERROR(1002,"账号或密码错误"),
+    CLIENT_AUTHENTICATION_FAILED(1003,"客户端认证失败"),
+    NO_PERMISSION(1004,"无权限访问"),
+    TOKEN_INVALID(1005,"Token无效"),
+    ACCOUNT_NOT_EXIST(1006,"账号不存在"),
+    PASSWORD_CHECK_FAIL(1007,"密码校验失败"),
+    ACCOUNT_DISABLE(1008,"账号被禁用"),
     UN_AUTHENTICATED(1009,"您还未登录"),
-    UN_AUTHORIZED(1010, "暂未登录或token已经过期"),
-    TOKEN_EXPIRED(1011,"凭证已过期"),
-    TOKEN_IS_NOT_EXIST(1012,"凭证不存在"),
 
 
     //---操作数据返回码  3xxx ----

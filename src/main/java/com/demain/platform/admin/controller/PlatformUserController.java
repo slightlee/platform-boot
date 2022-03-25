@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +42,22 @@ public class PlatformUserController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseResult
     public List<PlatformUser> list(){
+        return platformUserService.list();
+    }
+
+    @ApiOperation(value = "用户列表2")
+    @ApiOperationSupport(order = 2,author = "明天")
+    @RequestMapping(value = "/list2",method = RequestMethod.GET)
+    @ResponseResult
+    public List<PlatformUser> list2(){
+        return platformUserService.list();
+    }
+
+    @ApiOperation(value = "用户列表3")
+    @ApiOperationSupport(order = 3,author = "明天")
+    @RequestMapping(value = "/list3",method = RequestMethod.GET)
+    @ResponseResult
+    public List<PlatformUser> list3(){
         return platformUserService.list();
     }
 }
