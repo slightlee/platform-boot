@@ -1,9 +1,5 @@
 package com.demain.platform.admin.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,16 +16,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value="PlatformRole对象", description="角色表")
-public class PlatformRole implements Serializable {
+public class PlatformRole extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty(value = "主键")
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-
-    @ApiModelProperty(value = "租户id")
-    private Long tenantId;
 
     @ApiModelProperty(value = "父id")
     private Long parentId;
@@ -51,21 +40,5 @@ public class PlatformRole implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
-
-    @ApiModelProperty(value = "创建时间")
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "创建者")
-    private Long creator;
-
-    @ApiModelProperty(value = "更新时间")
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "更新者")
-    private Long operator;
-
-    @ApiModelProperty(value = "1 删除 0 不删除")
-    private Integer isDelete;
-
 
 }
