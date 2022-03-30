@@ -18,6 +18,7 @@ public class BaseEntity implements Serializable {
     private Long tenantId;
 
     @ApiModelProperty(value = "创建者")
+    @TableField(fill = FieldFill.INSERT)
     private Long creator;
 
     @ApiModelProperty(value = "创建时间")
@@ -25,6 +26,7 @@ public class BaseEntity implements Serializable {
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "更新者")
+    @TableField(fill = FieldFill.UPDATE)
     private Long operator;
 
     @ApiModelProperty(value = "更新时间")
