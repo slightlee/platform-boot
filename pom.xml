@@ -20,6 +20,8 @@
         <mybatis-plus.version>3.4.3</mybatis-plus.version>
         <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
         <velocity.version>2.3</velocity.version>
+        <bcpkix-jdk15on.version>1.70</bcpkix-jdk15on.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
     <dependencies>
 
@@ -137,7 +139,13 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
-            <version>1.70</version>
+            <version>${bcpkix-jdk15on.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
         </dependency>
 
     </dependencies>

@@ -11,15 +11,18 @@ public interface Constants {
 
     String PREVENT_DUPLICATION_PREFIX = "PREVENT_DUPLICATION_PREFIX:";
 
-    String COLON = ":";
-
     /**
      * JWT令牌前缀
      */
-    String JWT_TOKEN_PREFIX = "Bearer ";
+    String JWT_TOKEN_PREFIX = "bearer ";
 
     /**
      * 资源ID
      */
     String RESOURCE_ID = "platform-boot";
+
+    /**
+     * 签名密钥
+     */
+    String SIGN_KEY = "mtian";
 }

@@ -4,6 +4,7 @@ import com.demain.platform.auth.enhancer.CustomTokenEnhancer;
 import com.demain.platform.auth.exception.oauth.OAuthServerAuthenticationEntryPoint;
 import com.demain.platform.auth.exception.oauth.OAuthServerWebResponseExceptionTranslator;
 import com.demain.platform.auth.filter.OAuthServerClientCredentialsTokenEndpointFilter;
+import com.demain.platform.core.contant.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -116,9 +117,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         // 签名密钥
-        jwtAccessTokenConverter.setSigningKey("mtian");
+        jwtAccessTokenConverter.setSigningKey(Constants.SIGN_KEY);
         // 验证时使⽤的密钥，和签名密钥保持⼀致
-        jwtAccessTokenConverter.setVerifier(new MacSigner("mtian"));
+        jwtAccessTokenConverter.setVerifier(new MacSigner(Constants.SIGN_KEY));
         return jwtAccessTokenConverter;
     }
 

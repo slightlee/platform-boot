@@ -3,6 +3,8 @@ package com.demain.platform.admin.controller;
 
 import com.demain.platform.admin.entity.PlatformUser;
 import com.demain.platform.admin.service.PlatformUserService;
+import com.demain.platform.auth.entity.AuthUser;
+import com.demain.platform.auth.utils.AuthUtil;
 import com.demain.platform.core.annotation.ResponseResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -57,8 +59,10 @@ public class PlatformUserController {
     @ApiOperationSupport(order = 3,author = "明天")
     @RequestMapping(value = "/list3",method = RequestMethod.GET)
     @ResponseResult
-    public List<PlatformUser> list3(){
-        return platformUserService.list();
+    public AuthUser getCurrentUser(){
+        // 获取当前用户
+        AuthUser user = AuthUtil.getUser();
+        return user;
     }
 }
 

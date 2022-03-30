@@ -22,6 +22,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         Map<String, Object> map = new HashMap<>(2);
         PlatformUserDetails user = (PlatformUserDetails) authentication.getUserAuthentication().getPrincipal();
+        map.put("userId", user.getId());
         map.put("account", user.getAccount());
         map.put("realName", user.getRealName());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(map);
