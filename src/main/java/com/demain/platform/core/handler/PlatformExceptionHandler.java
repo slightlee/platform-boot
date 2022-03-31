@@ -89,6 +89,10 @@ public class PlatformExceptionHandler {
             //用户名或密码异常
         }else if(e instanceof InvalidGrantException){
             resultEnum = ResultEnum.ACCOUNT_PASSWORD_IS_ERROR;
+            log.info(e.getLocalizedMessage());
+            if("User account is locked".equals(e.getLocalizedMessage())){
+                resultEnum = ResultEnum.ACCOUNT_DISABLE;
+            }
         }
         return Result.error(resultEnum.getCode(),resultEnum.getMsg());
     }

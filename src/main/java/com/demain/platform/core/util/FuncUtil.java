@@ -16,6 +16,30 @@ public class FuncUtil {
     }
 
     /**
+     * 转换为String数组
+     *
+     * @param str 被转换的值
+     * @return 结果
+     */
+    public static String[] toStrArray(String str) {
+        return toStrArray(",", str);
+    }
+
+    /**
+     * 转换为String数组
+     *
+     * @param split 分隔符
+     * @param str   被转换的值
+     * @return 结果
+     */
+    public static String[] toStrArray(String split, String str) {
+        if (isBlank(str)) {
+            return new String[]{};
+        }
+        return str.split(split);
+    }
+
+    /**
      * 字符串转 int，为空则返回0
      *
      * <pre>
@@ -83,5 +107,25 @@ public class FuncUtil {
     public static long toLong(@Nullable final Object str, final long defaultValue) {
         return NumberUtil.toLong(String.valueOf(str), defaultValue);
     }
+
+    /**
+     * 判断是否为空字符串
+     * <pre class="code">
+     * $.isBlank(null)		= true
+     * $.isBlank("")		= true
+     * $.isBlank(" ")		= true
+     * $.isBlank("12345")	= false
+     * $.isBlank(" 12345 ")	= false
+     * </pre>
+     *
+     * @param cs the {@code CharSequence} to check (may be {@code null})
+     * @return {@code true} if the {@code CharSequence} is not {@code null},
+     * its length is greater than 0, and it does not contain whitespace only
+     * @see Character#isWhitespace
+     */
+    public static boolean isBlank(@Nullable final CharSequence cs) {
+        return StringUtil.isBlank(cs);
+    }
+
 
 }

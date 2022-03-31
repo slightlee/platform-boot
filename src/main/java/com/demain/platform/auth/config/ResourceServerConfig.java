@@ -51,8 +51,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/doc.html/**", "/swagger-resources", "/v2/api-docs/**", "/webjars/**").permitAll()
-                .antMatchers("/admin/user/list2").hasAuthority("ADMIN")
-                .antMatchers("/admin/user/list3").hasAuthority("USER")
+                .antMatchers("/admin/user/list2").hasAuthority("admin")
                 .anyRequest().authenticated()
         ;
     }
