@@ -14,7 +14,7 @@
     <name>platform-boot</name>
     <description>platform-boot project</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <fastjson.version>1.2.78</fastjson.version>
         <knife4j.version>2.0.8</knife4j.version>
         <mybatis-plus.version>3.4.3</mybatis-plus.version>
