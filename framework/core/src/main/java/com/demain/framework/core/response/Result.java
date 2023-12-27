@@ -1,13 +1,11 @@
 package com.demain.framework.core.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 返回对象
@@ -49,12 +47,6 @@ public class Result<T> implements Serializable {
         this.code = code;
         this.message = message;
         this.data = data;
-    }
-
-    @JsonIgnore
-//    @JSONField(serialize = false)
-    public boolean isSuccess() {
-        return Objects.equals(this.code, ResponseCode.SUCCESS.getCode());
     }
 
     public static <T> Result<T> success() {
