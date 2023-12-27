@@ -1,6 +1,5 @@
 package com.demain.framework.core.response;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -53,7 +52,7 @@ public class Result<T> implements Serializable {
     }
 
     @JsonIgnore
-    @JSONField(serialize = false)
+//    @JSONField(serialize = false)
     public boolean isSuccess() {
         return Objects.equals(this.code, ResponseCode.SUCCESS.getCode());
     }
