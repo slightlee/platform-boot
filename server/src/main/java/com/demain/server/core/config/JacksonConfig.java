@@ -51,7 +51,7 @@ public class JacksonConfig {
 
 
     /**
-     * jackson2 json序列化 null字段输出为空串
+     * jackson2 json序列化
      */
     private ObjectMapper serializingObjectMapper() {
 
