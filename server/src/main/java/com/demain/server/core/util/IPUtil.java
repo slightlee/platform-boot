@@ -3,13 +3,13 @@ package com.demain.server.core.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**

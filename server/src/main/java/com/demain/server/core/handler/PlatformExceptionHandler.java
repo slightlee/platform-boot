@@ -3,11 +3,10 @@ package com.demain.server.core.handler;
 import com.demain.framework.core.exception.PlatformException;
 import com.demain.framework.core.response.ResponseCode;
 import com.demain.framework.core.response.Result;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 @Slf4j

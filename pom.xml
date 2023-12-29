@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.6</version>
+        <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.demain.platform</groupId>
@@ -20,15 +20,15 @@
     </modules>
     <properties>
         <java.version>17</java.version>
-        <fastjson.version>1.2.78</fastjson.version>
-        <knife4j.version>2.0.8</knife4j.version>
-        <mybatis-plus.version>3.4.3</mybatis-plus.version>
-        <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
+        <fastjson.version>2.0.44</fastjson.version>
+        <knife4j.version>4.3.0</knife4j.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <mybatis-plus-generator.version>3.5.5</mybatis-plus-generator.version>
         <velocity.version>2.3</velocity.version>
         <bcpkix-jdk15on.version>1.70</bcpkix-jdk15on.version>
         <jjwt.version>0.9.1</jjwt.version>
         <jackson.version>2.9.8</jackson.version>
-        <slf4j.version>1.7.32</slf4j.version>
+        <slf4j.version>2.0.9</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -38,7 +38,7 @@
             <!-- mybatis-plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
@@ -48,17 +48,23 @@
                 <version>${mybatis-plus-generator.version}</version>
             </dependency>
 
+<!--            <dependency>-->
+<!--                <groupId>com.github.xiaoymin</groupId>-->
+<!--                <artifactId>knife4j-spring-boot-starter</artifactId>-->
+<!--                <version>${knife4j.version}</version>-->
+<!--            </dependency>-->
+
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba</groupId>-->
-<!--                <artifactId>fastjson</artifactId>-->
-<!--                <version>${fastjson.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
 
             <!-- velocity 模板 -->
             <dependency>
@@ -72,6 +78,7 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
+
 
         </dependencies>
 
