@@ -35,14 +35,14 @@ mybatis-plus:
 platform:
   swagger:
     title: platform-boot 接口文档
-    version: v1.0
-    termsOfServiceUrl: https://www.1ddh.cn
+    version: v1.0 版本
+    termsOfService: https://doc.1ddh.cn
     description: platform-boot API接口文档
-    basePackage:
     name: demain_lee
     url: https://www.1ddh.cn
     email: lmm_work@163.com
-    groupName: 1.0.0 版本
+    licenseName:
+    licenseUrl:
 
 knife4j:
   enable: true                # 开启增强功能
@@ -55,4 +55,4 @@ knife4j:
     enableFooter: false       # 禁用默认 footer显示
     enableFooterCustom: true  # 自定义footer
     # 自定义显示内容
-    footerCustomContent: © 2021 [platform-boot](https://www.1ddh.cn)
+    footerCustomContent: © 2021-2024 [platform-boot](https://www.1ddh.cn)

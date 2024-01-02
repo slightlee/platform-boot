@@ -1,38 +1,29 @@
 package com.demain.server.core.config;
 
 
-import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @Configuration
-@EnableSwagger2WebMvc
-@ConfigurationProperties(prefix="platform.swagger")
+@ConfigurationProperties(prefix = "platform.swagger")
 @Data
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SwaggerConfig {
 
     private String title;
 
     private String version;
 
-    private String termsOfServiceUrl;
+    private String termsOfService;
 
     private String description;
-
-    private String basePackage;
 
     private String name;
 
@@ -40,36 +31,41 @@ public class SwaggerConfig {
 
     private String email;
 
-    private String groupName;
+    private String licenseName;
 
-    private final OpenApiExtensionResolver openApiExtensionResolver;
+    private String licenseUrl;
 
     @Bean
-    public Docket createRestApi() {
-
-        return new Docket(DocumentationType.SWAGGER_2)
-
-                // 添加 自定义 footer
-                .extensions(openApiExtensionResolver.buildSettingExtensions())
-                // 添加 自定义文档
-                .groupName(groupName)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.demain.server"))
-//                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
-//                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                .paths(PathSelectors.any())
+    public GroupedOpenApi publicApi() {
+        return GroupedOpenApi.builder()
+                .group("系统服务")
+                .pathsToMatch("/admin/**")
                 .build();
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title(title)
-                .description(description)
-                .termsOfServiceUrl(termsOfServiceUrl)
-                .contact(new Contact(name,url,email))
-                .version(version)
+    @Bean
+    public GroupedOpenApi demoApi() {
+        return GroupedOpenApi.builder()
+                .group("demo服务")
+                .pathsToMatch("/demo/**")
                 .build();
+    }
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title(title)
+                        .description(description)
+                        .contact(
+                                new Contact().name(name).url(url).email(email))
+                        .termsOfService(termsOfService)
+                        .license(new License().name(licenseName).url(licenseUrl))
+                        .version(version)
+                )
+                .externalDocs(new ExternalDocumentation()
+                        .description("SpringDoc Full Documentation")
+                        .url("https://springdoc.org/"));
     }
 
 

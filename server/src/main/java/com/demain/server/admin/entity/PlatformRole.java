@@ -1,7 +1,6 @@
 package com.demain.server.admin.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,30 +14,30 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="PlatformRole对象", description="角色表")
+@Schema(name="PlatformRole对象", description="角色表")
 public class PlatformRole extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "父id")
+    @Schema(description = "父id")
     private Long parentId;
 
-    @ApiModelProperty(value = "角色名称")
+    @Schema(description = "角色名称")
     private String roleName;
 
-    @ApiModelProperty(value = "角色标识")
+    @Schema(description = "角色标识")
     private String roleKey;
 
-    @ApiModelProperty(value = "角色级别")
+    @Schema(description = "角色级别")
     private Integer roleLevel;
 
-    @ApiModelProperty(value = "0 启用 1 禁用")
+    @Schema(description = "0 启用 1 禁用")
     private Integer roleStatus;
 
-    @ApiModelProperty(value = "排序")
+    @Schema(description = "排序")
     private Integer sort;
 
-    @ApiModelProperty(value = "备注")
+    @Schema(description = "备注")
     private String remark;
 
 }
