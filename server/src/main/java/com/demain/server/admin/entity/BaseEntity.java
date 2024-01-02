@@ -2,6 +2,7 @@ package com.demain.server.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -34,6 +35,7 @@ public class BaseEntity implements Serializable {
     private LocalDateTime updateTime;
 
     @Schema(description = "1 删除 0 不删除")
+    @TableLogic
     private Integer isDelete;
 
 }

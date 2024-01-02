@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,14 +42,14 @@ public class PlatformRoleController {
     @Operation(summary =  "添加角色")
     @ApiOperationSupport(order = 2,author = "demain_lee")
     @RequestMapping(value = "/saveRole",method = RequestMethod.POST)
-    public Boolean saveRole(PlatformRole platformRole){
+    public Boolean saveRole(@RequestBody PlatformRole platformRole){
         return platformRoleService.save(platformRole);
     }
 
     @Operation(summary =  "编辑角色")
     @ApiOperationSupport(order = 3,author = "demain_lee")
     @RequestMapping(value = "/updateRole",method = RequestMethod.PUT)
-    public Boolean updateRole(PlatformRole platformRole){
+    public Boolean updateRole(@RequestBody PlatformRole platformRole){
         return platformRoleService.updateById(platformRole);
     }
 
