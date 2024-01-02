@@ -1,4 +1,4 @@
-package com.demain.server.core.handler;
+package com.demain.framework.mybatis.injector;
 
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;

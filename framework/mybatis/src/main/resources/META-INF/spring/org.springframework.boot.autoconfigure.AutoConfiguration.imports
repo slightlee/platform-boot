@@ -1,0 +1,2 @@
+com.demain.framework.mybatis.config.MybatisPlusConfig
+com.demain.framework.mybatis.handlers.MyMetaObjectHandler

@@ -1,4 +1,4 @@
-package com.demain.server.core.config;
+package com.demain.framework.mybatis.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * mapper 层 选装件
  * 选装件位于 com.baomidou.mybatisplus.extension.injector.methods 包下
- * 需要配合 Sql 注入器使用 {@link com.demain.server.core.handler.MyLogicSqlInjector}
+ * 需要配合 Sql 注入器使用 {@link com.demain.framework.mybatis.injector.MyLogicSqlInjector}
  */
 public interface MyBaseMapper<T> extends BaseMapper<T> {
 

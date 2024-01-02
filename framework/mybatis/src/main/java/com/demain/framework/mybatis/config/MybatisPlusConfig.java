@@ -1,18 +1,19 @@
-package com.demain.server.core.config;
+package com.demain.framework.mybatis.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.demain.server.core.handler.MyLogicSqlInjector;
-import org.mybatis.spring.annotation.MapperScan;
+import com.demain.framework.mybatis.injector.MyLogicSqlInjector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * 配置类
+ *
+ * @author demain_lee
+ * @since 2024/1/2
  */
 @Configuration
-@MapperScan({"com.demain.server.*.mapper.**"})
 public class MybatisPlusConfig {
 
 
