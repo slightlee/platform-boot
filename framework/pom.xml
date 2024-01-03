@@ -16,6 +16,7 @@
         <module>core</module>
         <module>mybatis</module>
         <module>swagger</module>
+        <module>web</module>
     </modules>
 
     <properties>

@@ -1,4 +1,4 @@
-package com.demain.server.core.util;
+package com.demain.framework.web.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

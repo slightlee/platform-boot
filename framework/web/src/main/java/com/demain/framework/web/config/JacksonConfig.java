@@ -1,4 +1,4 @@
-package com.demain.server.core.config;
+package com.demain.framework.web.config;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;

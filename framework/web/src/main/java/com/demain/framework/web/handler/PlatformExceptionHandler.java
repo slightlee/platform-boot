@@ -1,4 +1,4 @@
-package com.demain.server.core.handler;
+package com.demain.framework.web.handler;
 
 import com.demain.framework.core.exception.PlatformException;
 import com.demain.framework.core.response.ResponseCode;
@@ -8,7 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
+/**
+ * 自定义异常处理
+ *
+ * @author demain_lee
+ * @since 2024/1/3
+ */
 @Slf4j
 @RestControllerAdvice
 public class PlatformExceptionHandler {
