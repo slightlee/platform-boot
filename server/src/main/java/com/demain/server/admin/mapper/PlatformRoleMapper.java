@@ -1,7 +1,7 @@
 package com.demain.server.admin.mapper;
 
+import com.demain.framework.mybatis.mapper.MyBaseMapper;
 import com.demain.server.admin.entity.PlatformRole;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author demain_lee
  * @since 2021-12-14
  */
-public interface PlatformRoleMapper extends BaseMapper<PlatformRole> {
+public interface PlatformRoleMapper extends MyBaseMapper<PlatformRole> {
 
 }
