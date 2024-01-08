@@ -1,14 +1,28 @@
-//package com.demain.server.core.config;
-//
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.http.HttpHeaders;
-//import org.springframework.web.servlet.config.annotation.CorsRegistry;
-//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-//
-//
-//@Configuration
-//public class WebMvcConfig implements WebMvcConfigurer {
-//
+package com.demain.framework.web.config;
+
+import com.demain.framework.web.interceptor.ResponseResultInterceptor;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+
+/**
+ * web 配置
+ *
+ * @author demain_lee
+ * @since 2024/1/8
+ */
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+
+
+    /**
+     * 添加自定义拦截器
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new ResponseResultInterceptor()).addPathPatterns("/**");
+    }
 //
 //    /**
 //     * 跨域配置
@@ -31,5 +45,5 @@
 //                // maxAge(3600)表明在3600秒内，不需要再发送预检验请求，可以缓存该结果
 //                .maxAge(3600L);
 //    }
-//
-//}
+
+}

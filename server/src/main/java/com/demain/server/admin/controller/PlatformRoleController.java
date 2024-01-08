@@ -1,8 +1,10 @@
 package com.demain.server.admin.controller;
 
 
+import com.demain.framework.core.response.Result;
 import com.demain.server.admin.entity.PlatformRole;
 import com.demain.server.admin.service.PlatformRoleService;
+import com.demain.framework.web.annotation.ResponseResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +37,15 @@ public class PlatformRoleController {
     @Operation(summary =  "角色列表")
     @ApiOperationSupport(order = 1,author = "demain_lee")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public List<PlatformRole> list(){
+    public Result<List<PlatformRole>> list(){
+        return Result.data(platformRoleService.list());
+    }
+
+    @Operation(summary =  "角色列表2")
+    @ApiOperationSupport(order = 1,author = "demain_lee")
+    @RequestMapping(value = "/list2",method = RequestMethod.GET)
+    @ResponseResult
+    public List<PlatformRole> list2(){
         return platformRoleService.list();
     }
 
