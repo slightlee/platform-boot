@@ -1,6 +1,7 @@
-package com.demain.server.admin.mapper;
+package com.demain.server.test.admin.mapper;
 
 import com.demain.server.admin.entity.PlatformRole;
+import com.demain.server.admin.mapper.PlatformRoleMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
