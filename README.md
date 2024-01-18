@@ -14,3 +14,7 @@ mvn clean package -DDB_USERNAME=root -DDB_PASSWORD=123456
 # 打包跳过测试
 mvn clean package -DskipTests=true
 ```
+
+> 安装依赖
+
+如果 `mvn install` 、`mvn clean` 依赖过程中出现问题, 可以通过 `install` ` platform-dependencies` 处理。
