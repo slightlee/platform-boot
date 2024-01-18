@@ -56,3 +56,7 @@ knife4j:
     enableFooterCustom: true  # 自定义footer
     # 自定义显示内容
     footerCustomContent: © 2021-2024 [platform-boot](https://www.1ddh.cn)
+
+# 项目版本
+project:
+  version: @project.version@

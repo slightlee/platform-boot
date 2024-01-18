@@ -1,4 +1,4 @@
-${AnsiColor.BRIGHT_RED}
+${AnsiColor.BRIGHT_GREEN}
            mmmm                             mmmm                                           mm
            ""##                  ##        ##"""                                           ##                              ##
  ##m###m     ##       m#####m  #######   #######    m####m    ##m####  ####m##m            ##m###m    m####m    m####m   #######
@@ -8,7 +8,7 @@ ${AnsiColor.BRIGHT_RED}
  ## """       """"    """" ""     """"     ""        """"     ""       "" "" ""            "" """      """"      """"       """"
  ##
 ===============================================================
-    Application Version: 0.0.1
+    Application Version: ${project.version}
     Spring Boot Version: ${spring-boot.version} ${spring-boot.formatted-version}
 ===============================================================
 ${AnsiColor.DEFAULT}
