@@ -1,11 +1,13 @@
 package com.demain.framework.core.response;
 
+import com.demain.framework.core.exception.AbstractException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * 返回对象
@@ -46,6 +48,12 @@ public class Result<T> implements Serializable {
     private Result(String code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public Result(String code, String message, long timestamp) {
+        this.code = code;
+        this.message = message;
+        this.timestamp = timestamp;
     }
 
     private Result(String code, String message, T data) {
@@ -92,12 +100,20 @@ public class Result<T> implements Serializable {
 
     public static <T> Result<T> fail(String code, String message) {
         logger.debug("请求失败错误信息如下：code={}, message={}", code, message);
-        return new Result<T>(code, message);
+        return new Result<T>(code, message, System.currentTimeMillis());
     }
 
     public static <T> Result<T> fail(ResponseCode resultEnum) {
         logger.debug("请求失败错误信息如下：code={}, message={}", resultEnum.getCode(), resultEnum.getMessage());
         return new Result<T>(resultEnum.getCode(), resultEnum.getMessage());
+    }
+
+    public static Result<Void> fail(AbstractException abstractException) {
+        String errorCode = Optional.ofNullable(abstractException.getCode())
+                .orElse(ResponseCode.SERVICE_ERROR.getCode());
+        String errorMessage = Optional.ofNullable(abstractException.getMessage())
+                .orElse(ResponseCode.SERVICE_ERROR.getMessage());
+        return fail(errorCode, errorMessage);
     }
 
 }
