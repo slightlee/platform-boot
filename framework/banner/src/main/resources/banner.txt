@@ -1,4 +1,4 @@
-${AnsiColor.BRIGHT_GREEN}
+${AnsiColor.BRIGHT_RED}
            mmmm                             mmmm                                           mm
            ""##                  ##        ##"""                                           ##                              ##
  ##m###m     ##       m#####m  #######   #######    m####m    ##m####  ####m##m            ##m###m    m####m    m####m   #######
