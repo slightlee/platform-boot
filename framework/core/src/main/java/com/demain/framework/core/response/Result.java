@@ -22,7 +22,7 @@ public class Result<T> implements Serializable {
     /**
      * 状态码
      */
-    private Integer code;
+    private String code;
 
     /**
      * 描述信息
@@ -34,58 +34,70 @@ public class Result<T> implements Serializable {
      */
     private T data;
 
-    private Result(Integer code) {
+    /**
+     * 时间戳
+     */
+    private long timestamp;
+
+    private Result(String code) {
         this.code = code;
     }
 
-    private Result(Integer code, String message) {
+    private Result(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    private Result(Integer code, String message, T data) {
+    private Result(String code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
     }
 
+    public Result(String code, String message, T data, long timestamp) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+        this.timestamp = timestamp;
+    }
+
     public static <T> Result<T> success() {
-        return new Result<T>(ResponseCode.SUCCESS.getCode());
+        return new Result<T>(ResponseCode.OK.getCode());
     }
 
     public static <T> Result<T> success(String message) {
-        return new Result<T>(ResponseCode.SUCCESS.getCode(), message);
+        return new Result<T>(ResponseCode.OK.getCode(), message);
     }
 
 
     public static <T> Result<T> success(ResponseCode resultEnum) {
-        return new Result<T>(resultEnum.getCode(), resultEnum.getDesc());
+        return new Result<T>(resultEnum.getCode(), resultEnum.getMessage());
     }
 
 
     public static <T> Result<T> data(T data) {
-        return new Result<T>(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc(), data);
+        return new Result<T>(ResponseCode.OK.getCode(), ResponseCode.OK.getMessage(), data, System.currentTimeMillis());
     }
 
 
     public static <T> Result<T> fail() {
-        logger.debug("请求失败错误信息如下：code={}", ResponseCode.INTERNAL_SERVER_ERROR.getCode());
-        return new Result<T>(ResponseCode.INTERNAL_SERVER_ERROR.getCode());
+        logger.debug("请求失败错误信息如下：code={}", ResponseCode.SERVICE_ERROR.getCode());
+        return new Result<T>(ResponseCode.SERVICE_ERROR.getCode());
     }
 
     public static <T> Result<T> fail(String message) {
-        logger.debug("请求失败错误信息如下：code={}, message={}", ResponseCode.INTERNAL_SERVER_ERROR.getCode(), message);
-        return new Result<T>(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), message);
+        logger.debug("请求失败错误信息如下：code={}, message={}", ResponseCode.SERVICE_ERROR.getCode(), message);
+        return new Result<T>(ResponseCode.SERVICE_ERROR.getCode(), message);
     }
 
-    public static <T> Result<T> fail(int code, String message) {
+    public static <T> Result<T> fail(String code, String message) {
         logger.debug("请求失败错误信息如下：code={}, message={}", code, message);
         return new Result<T>(code, message);
     }
 
     public static <T> Result<T> fail(ResponseCode resultEnum) {
-        logger.debug("请求失败错误信息如下：code={}, message={}", resultEnum.getCode(), resultEnum.getDesc());
-        return new Result<T>(resultEnum.getCode(), resultEnum.getDesc());
+        logger.debug("请求失败错误信息如下：code={}, message={}", resultEnum.getCode(), resultEnum.getMessage());
+        return new Result<T>(resultEnum.getCode(), resultEnum.getMessage());
     }
 
 }

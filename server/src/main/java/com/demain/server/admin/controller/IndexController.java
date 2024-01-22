@@ -51,16 +51,17 @@ public class IndexController {
 
     @Operation(summary = "demo3")
     @ApiOperationSupport(order = 3, author = "demain_lee")
-    @RequestMapping(value = "/demo3", method = RequestMethod.POST)
-    public Result save() {
-        return true ? Result.success() : Result.success(ResponseCode.ADD_FAIL);
+    @RequestMapping(value = "/demo3", method = RequestMethod.GET)
+    public Result<String> demo3() {
+        int count = 1 / 0;
+        return Result.data("123456");
     }
 
 
     @Operation(summary = "demo4")
     @ApiOperationSupport(order = 4, author = "demain_lee")
     @RequestMapping(value = "/demo4", method = RequestMethod.POST)
-    public Result demo3() {
+    public Result demo4() {
         return Result.success("操作成功11111");
     }
 

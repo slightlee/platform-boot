@@ -24,7 +24,7 @@ public class PlatformExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public Result handlerException(Exception exception, HttpServletRequest request) {
         log.error("请求路径uri={},系统内部出现异常:{}", request.getRequestURI(), exception);
-        Result result = Result.fail(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), exception.getLocalizedMessage());
+        Result result = Result.fail(ResponseCode.SERVICE_ERROR.getCode(), exception.getLocalizedMessage());
         return result;
     }
 
@@ -35,7 +35,7 @@ public class PlatformExceptionHandler {
     @ExceptionHandler(value = {PlatformException.class})
     public Result handlerCustomException(PlatformException exception, HttpServletRequest request) {
         log.error("请求路径uri={},出现异常:{}", request.getRequestURI(), exception);
-        String errorMessage = exception.getMsg();
+        String errorMessage = exception.getMessage();
         Result result = Result.fail(exception.getCode(), errorMessage);
         return result;
     }

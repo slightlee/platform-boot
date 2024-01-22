@@ -1,37 +1,38 @@
 package com.demain.framework.core.exception;
 
 import com.demain.framework.core.response.ResponseCode;
-import lombok.Data;
+
+import java.io.Serial;
 
 /**
- * 自定义处理异常
+ * 自定义内部服务异常
+ *
+ * @author demain_lee
+ * @since 2024/1/22
  */
-@Data
-public class PlatformException extends RuntimeException {
+public class PlatformException extends AbstractException {
 
-    private int code;
-
-    private String msg;
-
-    private String errorMsg;
+    @Serial
+    private static final long serialVersionUID = -1060827041982349610L;
 
     public PlatformException() {
-        this.code = ResponseCode.INTERNAL_SERVER_ERROR.code;
-        this.msg = ResponseCode.INTERNAL_SERVER_ERROR.desc;
+        this(ResponseCode.SERVICE_ERROR, null, null);
     }
 
     public PlatformException(String message) {
-        this.code = ResponseCode.INTERNAL_SERVER_ERROR.code;
-        this.msg = message;
+        this(ResponseCode.SERVICE_ERROR, message, null);
     }
 
-    public PlatformException(ResponseCode resultCodeEnum) {
-        this.code = resultCodeEnum.getCode();
-        this.msg = resultCodeEnum.getDesc();
+    public PlatformException(ResponseCode responseCode) {
+        this(responseCode, responseCode.getMessage(), null);
     }
 
-    public PlatformException(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
+    public PlatformException(ResponseCode responseCode, String message) {
+        this(responseCode, message, null);
     }
+
+    public PlatformException(ResponseCode responseCode, String message, Throwable throwable) {
+        super(responseCode, message, throwable);
+    }
+
 }
