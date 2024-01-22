@@ -1,4 +1,3 @@
 com.demain.framework.web.config.JacksonConfig
-com.demain.framework.web.handler.GlobalExceptionHandler
 com.demain.framework.web.config.WebMvcConfig
-com.demain.framework.web.handler.ResponseResultHandler
+com.demain.framework.web.config.WebAutoConfiguration
