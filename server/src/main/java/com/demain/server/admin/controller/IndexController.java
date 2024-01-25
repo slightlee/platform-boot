@@ -1,8 +1,8 @@
 package com.demain.server.admin.controller;
 
 import com.demain.framework.core.exception.PlatformException;
-import com.demain.framework.core.response.ResponseCode;
 import com.demain.framework.core.response.Result;
+import com.demain.framework.web.annotation.ResponseResult;
 import com.demain.framework.web.util.IPUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -60,9 +60,17 @@ public class IndexController {
 
     @Operation(summary = "demo4")
     @ApiOperationSupport(order = 4, author = "demain_lee")
-    @RequestMapping(value = "/demo4", method = RequestMethod.POST)
+    @RequestMapping(value = "/demo4", method = RequestMethod.GET)
     public Result demo4() {
         return Result.success("操作成功11111");
+    }
+
+    @Operation(summary = "demo5")
+    @ApiOperationSupport(order = 5, author = "demain_lee")
+    @RequestMapping(value = "/demo5", method = RequestMethod.GET)
+    @ResponseResult
+    public String demo5() {
+        return "操作成功11111";
     }
 
 

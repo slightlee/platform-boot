@@ -2,6 +2,8 @@ package com.demain.framework.web.handler;
 
 import com.demain.framework.core.response.Result;
 import com.demain.framework.web.annotation.ResponseResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -42,6 +44,15 @@ public class ResponseResultHandler<T extends Serializable> implements ResponseBo
         // 异常响应体则直接返回code+message的消息体
         if (body instanceof Result) {
             return body;
+        }
+        if (body instanceof String) {
+            // 当响应体是String类型时，使用ObjectMapper转换，因为Spring默认使用StringHttpMessageConverter处理字符串，不会将字符串识别为JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                return (T) objectMapper.writeValueAsString(Result.data(body));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
         // 正常响应体则返回Result包装的code+message+data的消息体
         return (T) Result.data(body);
