@@ -42,7 +42,7 @@ public class SwaggerConfig {
 
 
     @Bean
-    public OpenAPI customOpenAPI() {
+    public OpenAPI customOpenApi() {
         return new OpenAPI()
                 .info(new Info()
                         .title(title)
