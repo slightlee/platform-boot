@@ -1,1 +1,1 @@
-com.demain.framework.swagger.config.SwaggerConfig
+com.demain.framework.swagger.config.SwaggerAutoConfiguration

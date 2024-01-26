@@ -38,7 +38,7 @@ public class BannerApplicationRunner implements ApplicationRunner {
 					\t knife4j接口文档: \t{}\s
 					\t swagger接口文档: \t{}\s
 					==========================================================""", applicationName, port,
-					"http://127.0.0.1:1668/doc.html", "http://127.0.0.1:1668/webjars/swagger-ui/index.html");
+					"http://127.0.0.1:"+ port +"/doc.html", "http://127.0.0.1:"+ port +"/swagger-ui/index.html");
 		});
 	}
 

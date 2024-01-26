@@ -44,6 +44,11 @@ platform:
     licenseName:
     licenseUrl:
 
+springdoc:
+  api-docs:
+    # 开启关闭接口文档
+    enabled: true
+
 knife4j:
   enable: true                # 开启增强功能
   production: false           # 是否生产环境 如果为true停用Knife4j文档
