@@ -27,7 +27,7 @@ import java.util.TimeZone;
  * @since 2023/12/28
  */
 @Configuration
-public class JacksonConfig {
+public class JacksonConfiguration {
 
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
