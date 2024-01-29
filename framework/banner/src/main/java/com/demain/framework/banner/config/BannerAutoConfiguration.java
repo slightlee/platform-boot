@@ -1,6 +1,7 @@
 package com.demain.framework.banner.config;
 
 import com.demain.framework.banner.core.BannerApplicationRunner;
+import com.demain.framework.banner.core.StartEventListener;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -18,4 +19,8 @@ public class BannerAutoConfiguration {
 		return new BannerApplicationRunner();
 	}
 
+	@Bean
+	public StartEventListener startEventListener() {
+		return new StartEventListener();
+	}
 }

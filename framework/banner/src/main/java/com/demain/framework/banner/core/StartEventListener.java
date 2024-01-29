@@ -3,7 +3,6 @@ package com.demain.framework.banner.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
@@ -18,7 +17,6 @@ import java.util.Objects;
  * @author demain_lee
  * @since 0.0.1
  */
-@Configuration
 public class StartEventListener {
 
 	private static final Logger log = LoggerFactory.getLogger(StartEventListener.class);
