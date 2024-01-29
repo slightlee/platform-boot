@@ -43,6 +43,9 @@ platform:
     email: lmm_work@163.com
     licenseName:
     licenseUrl:
+  sql:
+    slow:
+      enable: true
 
 springdoc:
   api-docs:

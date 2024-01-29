@@ -1,10 +1,15 @@
 package com.demain.framework.mybatis.config;
 
+import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.demain.framework.mybatis.handlers.MyMetaObjectHandler;
 import com.demain.framework.mybatis.injector.MyLogicSqlInjector;
+import com.demain.framework.mybatis.interceptor.SlowSqlInterceptor;
+import com.demain.framework.mybatis.props.SlowSQLProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,8 +20,14 @@ import org.springframework.context.annotation.Configuration;
  * @since 2024/1/2
  */
 @Configuration
+@EnableConfigurationProperties(SlowSQLProperties.class)
 public class MybatisPlusConfiguration {
 
+    private final SlowSQLProperties slowSQLProperties;
+
+    public MybatisPlusConfiguration(SlowSQLProperties slowSQLProperties) {
+        this.slowSQLProperties = slowSQLProperties;
+    }
 
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
@@ -50,4 +61,12 @@ public class MybatisPlusConfiguration {
         return new MyMetaObjectHandler();
     }
 
+    /**
+     * 注入mybatis插件 统计SQL执行耗时
+     */
+    @Bean
+    @ConditionalOnProperty(name = "platform.sql.slow.enable", havingValue = "true", matchIfMissing = true)
+    public ConfigurationCustomizer mybatisConfigurationCustomizer() {
+        return configuration -> configuration.addInterceptor(new SlowSqlInterceptor(slowSQLProperties));
+    }
 }
