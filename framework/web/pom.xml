@@ -51,6 +51,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.demain.platform</groupId>
+            <artifactId>platform-swagger</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
