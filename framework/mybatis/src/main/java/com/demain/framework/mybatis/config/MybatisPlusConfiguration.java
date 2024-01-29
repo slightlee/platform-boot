@@ -3,6 +3,7 @@ package com.demain.framework.mybatis.config;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.demain.framework.mybatis.handlers.MyMetaObjectHandler;
 import com.demain.framework.mybatis.injector.MyLogicSqlInjector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2024/1/2
  */
 @Configuration
-public class MybatisPlusConfig {
+public class MybatisPlusConfiguration {
 
 
     @Bean
@@ -38,6 +39,15 @@ public class MybatisPlusConfig {
     @Bean
     public MyLogicSqlInjector myLogicSqlInjector() {
         return new MyLogicSqlInjector();
+    }
+
+
+    /**
+     * 插入、更新 数据时自动填充默认值
+     */
+    @Bean
+    public MyMetaObjectHandler myMetaObjectHandler() {
+        return new MyMetaObjectHandler();
     }
 
 }
