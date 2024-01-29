@@ -23,10 +23,10 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(SlowSQLProperties.class)
 public class MybatisPlusConfiguration {
 
-    private final SlowSQLProperties slowSQLProperties;
+    private final SlowSQLProperties slowSqlProperties;
 
-    public MybatisPlusConfiguration(SlowSQLProperties slowSQLProperties) {
-        this.slowSQLProperties = slowSQLProperties;
+    public MybatisPlusConfiguration(SlowSQLProperties slowSqlProperties) {
+        this.slowSqlProperties = slowSqlProperties;
     }
 
     @Bean
@@ -67,6 +67,6 @@ public class MybatisPlusConfiguration {
     @Bean
     @ConditionalOnProperty(name = "platform.sql.slow.enable", havingValue = "true", matchIfMissing = true)
     public ConfigurationCustomizer mybatisConfigurationCustomizer() {
-        return configuration -> configuration.addInterceptor(new SlowSqlInterceptor(slowSQLProperties));
+        return configuration -> configuration.addInterceptor(new SlowSqlInterceptor(slowSqlProperties));
     }
 }

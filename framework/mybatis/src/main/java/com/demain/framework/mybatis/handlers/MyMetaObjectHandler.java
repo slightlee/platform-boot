@@ -6,11 +6,12 @@ import org.apache.ibatis.reflection.MetaObject;
 
 import java.time.LocalDateTime;
 
+
 /**
- * 实体类 日期 自动填充  ..
+ * 自动填充配置
  *
- * @TableField(fill = FieldFill.INSERT)
- * @TableField(fill = FieldFill.INSERT_UPDATE)
+ * @author demain_lee
+ * @since 2024/1/29
  */
 @Slf4j
 public class MyMetaObjectHandler implements MetaObjectHandler {
