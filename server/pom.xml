@@ -66,13 +66,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
 
-
-        <!-- redis -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-<!--        </dependency>-->
-
         <!-- 数据校验 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -126,20 +119,6 @@
             </resource>
         </resources>
 
-        <!--        <plugins>-->
-        <!--            <plugin>-->
-        <!--                <groupId>org.springframework.boot</groupId>-->
-        <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-        <!--                <configuration>-->
-        <!--                    <excludes>-->
-        <!--                        <exclude>-->
-        <!--                            <groupId>org.projectlombok</groupId>-->
-        <!--                            <artifactId>lombok</artifactId>-->
-        <!--                        </exclude>-->
-        <!--                    </excludes>-->
-        <!--                </configuration>-->
-        <!--            </plugin>-->
-        <!--        </plugins>-->
     </build>
 
 </project>
