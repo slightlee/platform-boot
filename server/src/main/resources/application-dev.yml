@@ -67,4 +67,4 @@ knife4j:
 
 # 项目版本
 project:
-  version: @project.version@
+  version: ${project.version}

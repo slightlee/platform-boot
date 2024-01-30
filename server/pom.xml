@@ -103,8 +103,6 @@
         </dependency>
 
 
-
-
     </dependencies>
 
 
@@ -120,6 +118,7 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
+                <!--  filtering 开启 用于读取 {project.version}  -->
                 <filtering>true</filtering>
                 <includes>
                     <include>**/*.yml</include>
@@ -127,20 +126,20 @@
             </resource>
         </resources>
 
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
+        <!--        <plugins>-->
+        <!--            <plugin>-->
+        <!--                <groupId>org.springframework.boot</groupId>-->
+        <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+        <!--                <configuration>-->
+        <!--                    <excludes>-->
+        <!--                        <exclude>-->
+        <!--                            <groupId>org.projectlombok</groupId>-->
+        <!--                            <artifactId>lombok</artifactId>-->
+        <!--                        </exclude>-->
+        <!--                    </excludes>-->
+        <!--                </configuration>-->
+        <!--            </plugin>-->
+        <!--        </plugins>-->
     </build>
 
 </project>

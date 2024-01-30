@@ -33,30 +33,4 @@
         </dependencies>
     </dependencyManagement>
 
-
-    <build>
-
-        <plugins>
-            <!--
-                获取 @project.version@
-                同时需要配置
-                 <resource>
-                    <directory>src/main/resources</directory>
-                    <filtering>true</filtering>
-                </resource>
-             -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-                <configuration>
-                    <delimiters>@</delimiters>
-                    <useDefaultDelimiters>false</useDefaultDelimiters>
-                </configuration>
-            </plugin>
-
-        </plugins>
-
-    </build>
-
 </project>
