@@ -1,11 +1,23 @@
 # 项目说明
 
+### 自定义组件
+| 组件名称         | 作用                          |
+| ---------------- | ----------------------------- |
+| platform-banner  | banner控制台输出              |
+| platform-core    | 基础核心包                    |
+| platform-mybatis | 数据处理相关                  |
+| platform-swagger | 基于SpringDoc的自定义文档组件 |
+| platform-web     | 服务相关                      |
+
+
+### 操作说明
+
 > idea 不会读取环境变量，所以需要在 idea 中配置环境变量
 
  步骤1: 打开 idea，点击菜单栏的 Run -> Edit Configurations...
 
  步骤2: 在弹出的窗口中，找到你的应用程序配置（通常是Spring Boot Application），然后在右侧的 "Modify options" 标签页中，会看到 "Environment variables" 部分。在这里，你可以手动添加环境变量键值对。
- 
+
 
 > 打包
 ```shell
