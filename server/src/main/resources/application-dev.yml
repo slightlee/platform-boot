@@ -68,3 +68,9 @@ knife4j:
 # 项目版本
 project:
   version: ${project.version}
+
+# 日志
+logging:
+  level:
+    root: info
+  config: classpath:logback-spring.xml
