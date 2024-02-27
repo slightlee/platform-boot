@@ -17,6 +17,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    /**
+     * 过滤器链
+     *
+     * @param http HttpSecurity
+     * @return SecurityFilterChain
+     * @throws Exception 异常
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -25,7 +32,7 @@ public class SecurityConfiguration {
                         authorize
                                 .requestMatchers(
                                         "/index",
-                                        "/loginPage",
+                                        "/login",
                                         "/doc.html",
                                         "/webjars/**",
                                         "/v3/api-docs/**",
@@ -38,8 +45,7 @@ public class SecurityConfiguration {
 //                .formLogin(Customizer.withDefaults())  // Form表单认证的默认配置 UsernamePasswordAuthenticationFilter 以及 DefaultLogoutPageGeneratingFilter 和 DefaultLogoutPageGeneratingFilter
                 .formLogin(login ->
                         login
-                                .loginPage("/loginPage").permitAll()
-                                .loginProcessingUrl("/login")
+                                .loginPage("/login").permitAll()
                 )
         ;
         return http.build();
