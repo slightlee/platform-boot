@@ -5,26 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.demain.platform</groupId>
-        <artifactId>platform-boot</artifactId>
+        <artifactId>platform-framework</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>platform-framework</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>core</module>
-        <module>mybatis</module>
-        <module>swagger</module>
-        <module>web</module>
-        <module>banner</module>
-        <module>security</module>
-    </modules>
+    <artifactId>platform-security</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>
