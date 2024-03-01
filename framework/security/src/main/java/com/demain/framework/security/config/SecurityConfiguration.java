@@ -10,6 +10,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Security 配置
+ * <p>
+ * {@link org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecurityConfiguration.WebSecurityEnablerConfiguration}
+ * WebSecurityEnablerConfiguration 是用来判断项目中是否使用了@EnableWebSecurity注解，如果没有使用，则添加。
+ * 也就是说我们自定义spring security配置类时，可以不用添加@EnableWebSecurity注解
  *
  * @author demain_lee
  * @since 2024/2/27
