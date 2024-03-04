@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @author demain_lee
  * @since 2024/1/30
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class MapperScanConfiguration {
 
     @Bean
