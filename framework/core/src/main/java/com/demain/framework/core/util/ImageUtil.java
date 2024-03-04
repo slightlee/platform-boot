@@ -20,6 +20,7 @@ import java.util.Base64;
  * @author demain_lee
  * @since 2024/02/21
  */
+@SuppressWarnings("unused")
 public class ImageUtil {
 
 
@@ -50,8 +51,9 @@ public class ImageUtil {
 
     /**
      * 保存http图片
+     * {@code} 注释可以帮助防止某些编辑器或静态分析工具误认为其中的http是一个链接
      *
-     * @param imageUrl        图片地址(eg: http://xxx.com/xxx.png)
+     * @param imageUrl        图片地址(eg: {@code http://xxx.com/xxx.png})
      * @param destinationPath 保存路径
      * @throws IOException 异常
      */

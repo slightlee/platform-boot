@@ -11,6 +11,7 @@ import java.time.Instant;
  * @author demain_lee
  * @since 2024/2/26
  */
+@SuppressWarnings("unused")
 public class DateUtil {
 
     /**
@@ -38,7 +39,7 @@ public class DateUtil {
      * @param timestamp 时间戳 1650718663
      * @return LocalDateTime
      */
-    public static LocalDateTime timestampToUTCLocalDateTime(long timestamp) {
+    public static LocalDateTime timestampToUtcLocalDateTime(long timestamp) {
         return LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC);
     }
 
@@ -57,9 +58,9 @@ public class DateUtil {
     /**
      * LocalDateTime 转为 指定时区 时间戳
      *
-     * @param localDateTime
-     * @param zoneId
-     * @return
+     * @param localDateTime localDateTime
+     * @param zoneId 时区
+     * @return 时间戳
      */
     public static long convertLocalDateTimeToTimestamp(LocalDateTime localDateTime, ZoneId zoneId) {
         Instant instant = localDateTime.atZone(zoneId).toInstant();

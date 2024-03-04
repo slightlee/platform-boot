@@ -6,6 +6,7 @@ package com.demain.framework.core.util;
  * @author demain_lee
  * @since 2023/12/25
  */
+@SuppressWarnings("unused")
 public final class StrUtil {
 
     public static final String SLASH = "/";

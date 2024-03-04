@@ -8,6 +8,7 @@ import com.demain.framework.core.enums.FileExtensionEnum;
  * @author demain_lee
  * @since 2024/02/22
  */
+@SuppressWarnings("unused")
 public class FileUtil {
 
     /**
