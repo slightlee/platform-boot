@@ -13,14 +13,14 @@ import org.springframework.context.annotation.Bean;
  */
 @AutoConfiguration
 public class BannerAutoConfiguration {
-
-	@Bean
-	public BannerApplicationRunner bannerApplicationRunner() {
-		return new BannerApplicationRunner();
-	}
-
-	@Bean
-	public StartEventListener startEventListener() {
-		return new StartEventListener();
-	}
+    
+    @Bean
+    public BannerApplicationRunner bannerApplicationRunner() {
+        return new BannerApplicationRunner();
+    }
+    
+    @Bean
+    public StartEventListener startEventListener() {
+        return new StartEventListener();
+    }
 }

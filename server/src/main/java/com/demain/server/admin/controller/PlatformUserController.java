@@ -1,6 +1,5 @@
 package com.demain.server.admin.controller;
 
-
 import com.demain.framework.core.response.Result;
 import com.demain.server.admin.entity.PlatformUser;
 import com.demain.server.admin.service.PlatformUserService;
@@ -32,31 +31,28 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 public class PlatformUserController {
-
+    
     private final PlatformUserService platformUserService;
-
-
-    @Operation(summary =  "用户列表")
+    
+    @Operation(summary = "用户列表")
     @ApiOperationSupport(order = 1, author = "demain_lee")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<PlatformUser> list() {
         return platformUserService.list();
     }
-
-    @Operation(summary =  "用户列表2")
+    
+    @Operation(summary = "用户列表2")
     @ApiOperationSupport(order = 2, author = "demain_lee")
     @RequestMapping(value = "/list2", method = RequestMethod.GET)
     public Result<List<PlatformUser>> list2() {
         return Result.data(platformUserService.list());
     }
-
-    @Operation(summary =  "用户列表2")
+    
+    @Operation(summary = "用户列表2")
     @ApiOperationSupport(order = 2, author = "demain_lee")
     @RequestMapping(value = "/list3", method = RequestMethod.GET)
     public Result list3() {
         return Result.success("操作成功");
     }
-
+    
 }
-
-

@@ -14,12 +14,12 @@ import java.lang.reflect.Method;
  */
 @Component
 public class ResponseResultInterceptor implements HandlerInterceptor {
-
+    
     /**
      * 使用统一返回体的标识
      */
     private static final String RESPONSE_RESULT_ANNOTATION = "RESPONSE-RESULT-ANNOTATION";
-
+    
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 正在处理请求的方法bean
@@ -42,5 +42,5 @@ public class ResponseResultInterceptor implements HandlerInterceptor {
         }
         return true;
     }
-
+    
 }

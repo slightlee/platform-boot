@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnWebApplication
 public class WebAutoConfiguration {
-
+    
     /**
      * 自定义全局异常处理器
      */
@@ -25,7 +25,7 @@ public class WebAutoConfiguration {
     public GlobalExceptionHandler globalExceptionHandler() {
         return new GlobalExceptionHandler();
     }
-
+    
     /**
      * 接口包装
      */
@@ -34,5 +34,5 @@ public class WebAutoConfiguration {
     public ResponseResultHandler responseResultHandler() {
         return new ResponseResultHandler();
     }
-
+    
 }

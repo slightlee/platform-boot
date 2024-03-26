@@ -29,15 +29,15 @@ import java.sql.Statement;
 })
 @RequiredArgsConstructor
 public class SlowSqlInterceptor implements Interceptor {
-
+    
     private final SlowSQLProperties slowSQLProperties;
-
+    
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-
+        
         Object target = PluginUtils.realTarget(invocation.getTarget());
         long startTime = SystemClock.now();
-
+        
         StatementHandler statementHandler = (StatementHandler) target;
         try {
             return invocation.proceed();
@@ -54,5 +54,5 @@ public class SlowSqlInterceptor implements Interceptor {
             }
         }
     }
-
+    
 }

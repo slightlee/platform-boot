@@ -7,7 +7,7 @@ package com.demain.framework.core.enums;
  * @since 2024/02/22
  */
 public enum FileExtensionEnum {
-
+    
     TXT("txt"),
     PDF("pdf"),
     DOCX("docx"),
@@ -34,13 +34,13 @@ public enum FileExtensionEnum {
     APK("apk"),
     ZIP("zip"),
     RAR("rar");
-
+    
     private final String extension;
-
+    
     FileExtensionEnum(String extension) {
         this.extension = extension;
     }
-
+    
     public String getExtension() {
         return extension;
     }

@@ -16,5 +16,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PlatformUserRoleServiceImpl extends ServiceImpl<PlatformUserRoleMapper, PlatformUserRole> implements PlatformUserRoleService {
-
+    
 }

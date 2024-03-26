@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-
+    
     /**
      * 过滤器链
      *
@@ -33,30 +33,26 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(Customizer.withDefaults())       // CsrfFilter
-                .authorizeHttpRequests(authorize ->    // AuthorizationFilter
-                        authorize
-                                .requestMatchers(
-                                        "/index",
-                                        "/login",
-                                        "/doc.html",
-                                        "/webjars/**",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/swagger-resources/**"
-                                ).permitAll()
-                                .anyRequest().authenticated()
-                )
-                .httpBasic(Customizer.withDefaults())  // BasicAuthenticationFilter
-//                .formLogin(Customizer.withDefaults())  // Form表单认证的默认配置 UsernamePasswordAuthenticationFilter 以及 DefaultLogoutPageGeneratingFilter 和 DefaultLogoutPageGeneratingFilter
-                .formLogin(login ->
-                        login
-                                .loginPage("/login").permitAll()
-                )
-        ;
+                .csrf(Customizer.withDefaults()) // CsrfFilter
+                .authorizeHttpRequests(authorize -> // AuthorizationFilter
+                authorize
+                        .requestMatchers(
+                                "/index",
+                                "/login",
+                                "/doc.html",
+                                "/webjars/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults()) // BasicAuthenticationFilter
+                // .formLogin(Customizer.withDefaults()) // Form表单认证的默认配置 UsernamePasswordAuthenticationFilter 以及 DefaultLogoutPageGeneratingFilter 和 DefaultLogoutPageGeneratingFilter
+                .formLogin(login -> login
+                        .loginPage("/login").permitAll());
         return http.build();
     }
-
+    
     /**
      * 密码编码器
      *

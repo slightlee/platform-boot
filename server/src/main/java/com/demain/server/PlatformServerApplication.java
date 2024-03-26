@@ -13,9 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan("com.demain.server.admin.mapper")
 public class PlatformServerApplication {
-
+    
     public static void main(String[] args) {
         SpringApplication.run(PlatformServerApplication.class, args);
     }
-
+    
 }

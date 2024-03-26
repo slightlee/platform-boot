@@ -14,19 +14,19 @@ import java.util.Optional;
  */
 @Getter
 public class AbstractException extends RuntimeException {
-
+    
     @Serial
     private static final long serialVersionUID = -8215256748995260662L;
-
+    
     private final String code;
     private final String message;
-
+    
     public AbstractException(ResponseCode responseCode, String message, Throwable throwable) {
         super(message, throwable);
         this.code = responseCode.getCode();
         this.message = Optional.ofNullable(message).orElse(responseCode.getMessage());
     }
-
+    
     public AbstractException(String code, String message, Throwable throwable) {
         super(message, throwable);
         this.code = code;

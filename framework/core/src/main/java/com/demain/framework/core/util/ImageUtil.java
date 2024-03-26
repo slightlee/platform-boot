@@ -22,8 +22,7 @@ import java.util.Base64;
  */
 @SuppressWarnings("unused")
 public class ImageUtil {
-
-
+    
     /**
      * 将base64编码的图片转为BufferedImage
      *
@@ -36,7 +35,7 @@ public class ImageUtil {
         ByteArrayInputStream bis = new ByteArrayInputStream(decodedBytes);
         return ImageIO.read(bis);
     }
-
+    
     /**
      * 保存BufferedImage图片
      *
@@ -48,7 +47,7 @@ public class ImageUtil {
         File outputFile = new File(outputPath);
         ImageIO.write(image, FileExtensionEnum.PNG.getExtension(), outputFile);
     }
-
+    
     /**
      * 保存http图片
      * {@code} 注释可以帮助防止某些编辑器或静态分析工具误认为其中的http是一个链接

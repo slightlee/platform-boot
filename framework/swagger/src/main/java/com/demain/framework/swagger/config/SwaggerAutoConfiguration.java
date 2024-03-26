@@ -19,17 +19,15 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(SwaggerProperties.class)
-@ConditionalOnProperty(
-        name = {"springdoc.api-docs.enabled"},
-        havingValue = "true")
+@ConditionalOnProperty(name = {"springdoc.api-docs.enabled"}, havingValue = "true")
 public class SwaggerAutoConfiguration {
-
+    
     private final SwaggerProperties properties;
-
+    
     public SwaggerAutoConfiguration(SwaggerProperties properties) {
         this.properties = properties;
     }
-
+    
     @Bean
     public OpenAPI customOpenApi() {
         return new OpenAPI()
@@ -40,12 +38,10 @@ public class SwaggerAutoConfiguration {
                                 new Contact().name(properties.getName()).url(properties.getUrl()).email(properties.getEmail()))
                         .termsOfService(properties.getTermsOfService())
                         .license(new License().name(properties.getLicenseName()).url(properties.getLicenseUrl()))
-                        .version(properties.getVersion())
-                )
+                        .version(properties.getVersion()))
                 .externalDocs(new ExternalDocumentation()
                         .description("SpringDoc Full Documentation")
                         .url("https://springdoc.org/"));
     }
-
-
+    
 }

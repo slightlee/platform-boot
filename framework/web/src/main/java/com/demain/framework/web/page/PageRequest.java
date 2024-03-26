@@ -12,13 +12,13 @@ import lombok.Data;
 @Data
 @Schema(description = "分页参数")
 public class PageRequest {
-
+    
     @Schema(description = "当前页数")
     private Long current;
-
+    
     @Schema(description = "每页显示条数")
     private Long size;
-
+    
     /**
      * 默认构造器，当分页参数不传时提供默认值
      */

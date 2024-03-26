@@ -15,7 +15,7 @@ import java.io.*;
  */
 @SuppressWarnings("unused")
 public class ThumbnailUtil {
-
+    
     /**
      * 压缩图像
      *
@@ -40,7 +40,7 @@ public class ThumbnailUtil {
         input.close();
         return output;
     }
-
+    
     /**
      * 压缩图像
      *
@@ -58,8 +58,7 @@ public class ThumbnailUtil {
                 .outputQuality(quality)
                 .toFile(new File(compressPath));
     }
-
-
+    
     /**
      * 添加水印
      * <a href="https://github.com/coobird/thumbnailator/wiki/Examples">...</a>
@@ -88,7 +87,7 @@ public class ThumbnailUtil {
                 .watermark(positions, watermarkImage, opacity)
                 .asBufferedImage();
     }
-
+    
     /**
      * 添加水印
      * <a href="https://github.com/coobird/thumbnailator/wiki/Examples">...</a>
@@ -113,5 +112,5 @@ public class ThumbnailUtil {
                 .watermark(positions, watermarkImage, opacity)
                 .toFile(new File(processPath));
     }
-
+    
 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+    
     /**
      * 自定义异常
      */
@@ -31,8 +31,7 @@ public class GlobalExceptionHandler {
         }
         return Result.fail(exception);
     }
-
-
+    
     /**
      * 兜底处理
      */
@@ -41,7 +40,7 @@ public class GlobalExceptionHandler {
         log.error("[{}] {} [ex] {}", request.getMethod(), getUrl(request), throwable.toString());
         return Result.fail(ResponseCode.SERVICE_ERROR.getCode(), "系统异常，请联系管理员!");
     }
-
+    
     private String getUrl(HttpServletRequest request) {
         if (StrUtil.isEmpty(request.getQueryString())) {
             return request.getRequestURL().toString();

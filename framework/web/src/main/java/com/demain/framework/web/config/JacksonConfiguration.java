@@ -28,46 +28,46 @@ import java.util.TimeZone;
  */
 @Configuration
 public class JacksonConfiguration {
-
+    
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
-
+    
     @Bean
     public ObjectMapper objectMapper() {
-
+        
         ObjectMapper objectMapper = serializingObjectMapper();
         // 序列化枚举值
         objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-        //忽略value为null时key的输出
-//        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        //序列化成json时，将所有的Long变成string
+        // 忽略value为null时key的输出
+        // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // 序列化成json时，将所有的Long变成string
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         objectMapper.registerModule(simpleModule);
         return objectMapper;
     }
-
-
+    
     /**
      * jackson2 json序列化
      */
     private ObjectMapper serializingObjectMapper() {
-
+        
         ObjectMapper objectMapper = new ObjectMapper();
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //序列化日期格式
+        // 序列化日期格式
         javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
         javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer());
         javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer());
         javaTimeModule.addSerializer(Date.class, new DateSerializer(false, simpleDateFormat));
-        //反序列化日期格式
+        // 反序列化日期格式
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
         javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer());
         javaTimeModule.addDeserializer(Date.class, new JsonDeserializer<Date>() {
+            
             @Override
             public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                 String date = jsonParser.getText();
@@ -84,68 +84,71 @@ public class JacksonConfiguration {
         objectMapper.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         return objectMapper;
     }
-
-
+    
     /**
      * LocalDateTime序列化
      */
     private class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
+        
         @Override
         public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             gen.writeString(value.format(DATETIME_FORMATTER));
         }
     }
-
+    
     /**
      * LocalDateTime反序列化
      */
     private class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
+        
         @Override
         public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             return LocalDateTime.parse(p.getValueAsString(), DATETIME_FORMATTER);
         }
     }
-
-
+    
     /**
      * LocalTime序列化
      */
     private class LocalTimeSerializer extends JsonSerializer<LocalTime> {
+        
         @Override
         public void serialize(LocalTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             gen.writeString(value.format(TIME_FORMATTER));
         }
     }
-
+    
     /**
      * LocalTime反序列化
      */
     private class LocalTimeDeserializer extends JsonDeserializer<LocalTime> {
+        
         @Override
         public LocalTime deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
             return LocalTime.parse(p.getValueAsString(), TIME_FORMATTER);
         }
     }
-
-
+    
     /**
      * LocalDate序列化
      */
     private class LocalDateSerializer extends JsonSerializer<LocalDate> {
+        
         @Override
         public void serialize(LocalDate value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             gen.writeString(value.format(DATE_FORMATTER));
         }
     }
-
+    
     /**
      * LocalDate反序列化
      */
     private class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
+        
         @Override
         public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             return LocalDate.parse(p.getValueAsString(), DATE_FORMATTER);
         }
     }
-
+    
 }

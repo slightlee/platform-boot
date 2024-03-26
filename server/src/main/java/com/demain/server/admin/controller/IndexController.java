@@ -26,8 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 public class IndexController {
-
-
+    
     @Operation(summary = "demo1")
     @ApiOperationSupport(order = 1, author = "demain_lee")
     @RequestMapping(value = "/demo1", method = RequestMethod.GET)
@@ -36,7 +35,7 @@ public class IndexController {
         log.info("ip地址为：{}", IPUtil.getIpAddr(request));
         return list;
     }
-
+    
     @Operation(summary = "demo2")
     @ApiOperationSupport(order = 2, author = "demain_lee")
     @RequestMapping(value = "/demo2", method = RequestMethod.GET)
@@ -48,7 +47,7 @@ public class IndexController {
         }
         return Result.data("123456");
     }
-
+    
     @Operation(summary = "demo3")
     @ApiOperationSupport(order = 3, author = "demain_lee")
     @RequestMapping(value = "/demo3", method = RequestMethod.GET)
@@ -56,15 +55,14 @@ public class IndexController {
         int count = 1 / 0;
         return Result.data("123456");
     }
-
-
+    
     @Operation(summary = "demo4")
     @ApiOperationSupport(order = 4, author = "demain_lee")
     @RequestMapping(value = "/demo4", method = RequestMethod.GET)
     public Result demo4() {
         return Result.success("操作成功11111");
     }
-
+    
     @Operation(summary = "demo5")
     @ApiOperationSupport(order = 5, author = "demain_lee")
     @RequestMapping(value = "/demo5", method = RequestMethod.GET)
@@ -72,6 +70,5 @@ public class IndexController {
     public String demo5() {
         return "操作成功11111";
     }
-
-
+    
 }

@@ -18,24 +18,24 @@ import java.util.Objects;
  * @since 0.0.1
  */
 public class StartEventListener {
-
-	private static final Logger log = LoggerFactory.getLogger(StartEventListener.class);
-
-	public StartEventListener() {
-	}
-
-	/**
-	 * WebServerInitializedEvent Web服务器初始化事件 在WebServer启动之后发送
-	 */
-	@Async
-	@Order
-	@EventListener({ WebServerInitializedEvent.class })
-	public void afterStart(WebServerInitializedEvent event) {
-		Environment environment = event.getApplicationContext().getEnvironment();
-		String appName = Objects.requireNonNull(environment.getProperty("spring.application.name")).toUpperCase();
-		int localPort = event.getWebServer().getPort();
-		String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
-		log.info("{} 服务启动成功，当前使用的端口: {}，环境变量: {}", appName, localPort, profile);
-	}
-
+    
+    private static final Logger log = LoggerFactory.getLogger(StartEventListener.class);
+    
+    public StartEventListener() {
+    }
+    
+    /**
+     * WebServerInitializedEvent Web服务器初始化事件 在WebServer启动之后发送
+     */
+    @Async
+    @Order
+    @EventListener({WebServerInitializedEvent.class})
+    public void afterStart(WebServerInitializedEvent event) {
+        Environment environment = event.getApplicationContext().getEnvironment();
+        String appName = Objects.requireNonNull(environment.getProperty("spring.application.name")).toUpperCase();
+        int localPort = event.getWebServer().getPort();
+        String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
+        log.info("{} 服务启动成功，当前使用的端口: {}，环境变量: {}", appName, localPort, profile);
+    }
+    
 }

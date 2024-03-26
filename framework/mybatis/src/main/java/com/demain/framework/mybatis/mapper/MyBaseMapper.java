@@ -12,10 +12,9 @@ import java.util.List;
  * 需要配合 Sql 注入器使用 {@link com.demain.framework.mybatis.injector.MyLogicSqlInjector}
  */
 public interface MyBaseMapper<T> extends BaseMapper<T> {
-
-
+    
     // 以下定义的 3 个 method，是mybatisPlus内置的选装件（升级到3.3之后才有的）
-
+    
     /**
      * 批量新增数据
      * <p>
@@ -42,7 +41,7 @@ public interface MyBaseMapper<T> extends BaseMapper<T> {
      * <li> 例3: t -> t.getFieldFill() != FieldFill.UPDATE) , 表示不要填充策略为 UPDATE 的字段 </li>
      */
     int insertBatchSomeColumn(List<T> entityList);
-
+    
     /**
      * 根据 ID 更新固定的那几个字段(但是不包含逻辑删除)
      *
@@ -50,7 +49,7 @@ public interface MyBaseMapper<T> extends BaseMapper<T> {
      * @return
      */
     int alwaysUpdateSomeColumnById(@Param(Constants.ENTITY) T entity);
-
+    
     /**
      * 根据 id 逻辑删除数据,并带字段填充功能
      * <p>注意入参是 entity !!! ,如果字段没有自动填充,就只是单纯的逻辑删除</p>
@@ -58,5 +57,5 @@ public interface MyBaseMapper<T> extends BaseMapper<T> {
      * @deprecated 3.5.0 {@link com.baomidou.mybatisplus.core.injector.methods.DeleteById}
      */
     int deleteByIdWithFill(T entity);
-
+    
 }

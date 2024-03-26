@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ApiSupport(order = 10, author = "demain_lee")
 @Controller
 public class LoginController {
-
+    
     /**
      * 测试页面
      *
@@ -20,7 +20,7 @@ public class LoginController {
     public String index() {
         return "index";
     }
-
+    
     /**
      * 测试页面
      *
@@ -31,7 +31,7 @@ public class LoginController {
     public String index2() {
         return "index2";
     }
-
+    
     /**
      * 登录页面
      *
@@ -41,5 +41,5 @@ public class LoginController {
     public String login() {
         return "login";
     }
-
+    
 }

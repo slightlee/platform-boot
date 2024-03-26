@@ -12,15 +12,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "platform.sql.slow")
 @Data
 public class SlowSQLProperties {
-
+    
     /**
      * 是否开启慢查询
      */
     private boolean enable = false;
-
+    
     /**
      * 默认2s
      */
     private long cost = 2000L;
-
+    
 }

@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2021-12-14
  */
 public interface PlatformUserRoleMapper extends BaseMapper<PlatformUserRole> {
-
+    
 }

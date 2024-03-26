@@ -16,30 +16,30 @@ import java.util.concurrent.TimeUnit;
  * @since 0.0.1
  */
 public class BannerApplicationRunner implements ApplicationRunner {
-
-	private static final Logger logger = LoggerFactory.getLogger(BannerApplicationRunner.class);
-
-	@Value("${spring.application.name}")
-	private String applicationName;
-
-	@Value("${server.port}")
-	private String port;
-
-	@Override
-	public void run(ApplicationArguments args) {
-
-		ThreadUtil.execute(() -> {
-			ThreadUtil.sleep(1, TimeUnit.SECONDS); // 延迟 1 秒，保证输出到结尾
-			logger.info("""
-
-					==========================================================
-					\t {} 服务启动成功 φ(゜▽゜*)♪
-					\t 占用端口: \t{}\s
-					\t knife4j接口文档: \t{}\s
-					\t swagger接口文档: \t{}\s
-					==========================================================""", applicationName, port,
-					"http://127.0.0.1:"+ port +"/doc.html", "http://127.0.0.1:"+ port +"/swagger-ui/index.html");
-		});
-	}
-
+    
+    private static final Logger logger = LoggerFactory.getLogger(BannerApplicationRunner.class);
+    
+    @Value("${spring.application.name}")
+    private String applicationName;
+    
+    @Value("${server.port}")
+    private String port;
+    
+    @Override
+    public void run(ApplicationArguments args) {
+        
+        ThreadUtil.execute(() -> {
+            ThreadUtil.sleep(1, TimeUnit.SECONDS); // 延迟 1 秒，保证输出到结尾
+            logger.info("""
+                    
+                    ==========================================================
+                    \t {} 服务启动成功 φ(゜▽゜*)♪
+                    \t 占用端口: \t{}\s
+                    \t knife4j接口文档: \t{}\s
+                    \t swagger接口文档: \t{}\s
+                    ==========================================================""", applicationName, port,
+                    "http://127.0.0.1:" + port + "/doc.html", "http://127.0.0.1:" + port + "/swagger-ui/index.html");
+        });
+    }
+    
 }

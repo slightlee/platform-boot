@@ -22,11 +22,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomUserDetailsService implements UserDetailsService {
-
+    
     private final PlatformUserService userService;
-
+    
     private final PlatformUserRoleService userRoleService;
-
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         PlatformUser platformUser = userService.getOne(Wrappers.<PlatformUser>lambdaQuery().eq(PlatformUser::getAccount, username));

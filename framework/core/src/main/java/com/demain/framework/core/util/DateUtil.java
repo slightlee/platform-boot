@@ -13,7 +13,7 @@ import java.time.Instant;
  */
 @SuppressWarnings("unused")
 public class DateUtil {
-
+    
     /**
      * 获取中国时区的 ZoneId 中国的时区通常使用 "Asia/Shanghai"
      *
@@ -22,7 +22,7 @@ public class DateUtil {
     public static ZoneId getChinaZoneId() {
         return ZoneId.of("Asia/Shanghai");
     }
-
+    
     /**
      * 获取指定时区的 ZoneId
      *
@@ -32,7 +32,7 @@ public class DateUtil {
     public static ZoneId getZoneId(String zoneId) {
         return ZoneId.of(zoneId);
     }
-
+    
     /**
      * 时间戳 转为 UTC LocalDateTime
      *
@@ -42,7 +42,7 @@ public class DateUtil {
     public static LocalDateTime timestampToUtcLocalDateTime(long timestamp) {
         return LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC);
     }
-
+    
     /**
      * 时间戳 转为 指定时区 LocalDateTime
      *
@@ -54,7 +54,7 @@ public class DateUtil {
         Instant instant = Instant.ofEpochSecond(timestamp);
         return LocalDateTime.ofInstant(instant, zoneId);
     }
-
+    
     /**
      * LocalDateTime 转为 指定时区 时间戳
      *
@@ -66,7 +66,7 @@ public class DateUtil {
         Instant instant = localDateTime.atZone(zoneId).toInstant();
         return instant.getEpochSecond();
     }
-
+    
     /**
      * 获取当前时间
      *
@@ -75,5 +75,5 @@ public class DateUtil {
     public static LocalDateTime currentLocalDateTime() {
         return LocalDateTime.now();
     }
-
+    
 }

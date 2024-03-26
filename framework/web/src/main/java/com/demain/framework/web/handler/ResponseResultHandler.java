@@ -24,12 +24,12 @@ import java.util.Objects;
  */
 @RestControllerAdvice
 public class ResponseResultHandler<T extends Serializable> implements ResponseBodyAdvice<T> {
-
+    
     /**
      * 使用统一返回体的标识
      */
     private static final String RESPONSE_RESULT_ANNOTATION = "RESPONSE-RESULT-ANNOTATION";
-
+    
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -38,9 +38,10 @@ public class ResponseResultHandler<T extends Serializable> implements ResponseBo
         // 判断返回体是否需要处理
         return responseResult != null;
     }
-
+    
     @Override
-    public T beforeBodyWrite(T body, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+    public T beforeBodyWrite(T body, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest,
+                             ServerHttpResponse serverHttpResponse) {
         // 异常响应体则直接返回code+message的消息体
         if (body instanceof Result) {
             return body;

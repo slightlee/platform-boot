@@ -10,7 +10,7 @@ import com.demain.framework.core.enums.FileExtensionEnum;
  */
 @SuppressWarnings("unused")
 public class FileUtil {
-
+    
     /**
      * 获取文件的后缀
      *
@@ -24,7 +24,7 @@ public class FileUtil {
         }
         return "";
     }
-
+    
     /**
      * 检查文件后缀是否在枚举中
      *
@@ -40,5 +40,5 @@ public class FileUtil {
         }
         return false;
     }
-
+    
 }

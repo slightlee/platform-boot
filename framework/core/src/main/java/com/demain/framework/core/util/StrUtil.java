@@ -8,9 +8,9 @@ package com.demain.framework.core.util;
  */
 @SuppressWarnings("unused")
 public final class StrUtil {
-
+    
     public static final String SLASH = "/";
-
+    
     /**
      * 获取后缀
      *
@@ -20,7 +20,7 @@ public final class StrUtil {
     public static String getSuffix(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
-
+    
     /**
      * 获取前缀
      *
@@ -30,12 +30,12 @@ public final class StrUtil {
     public static String getPrefix(String fileName) {
         return fileName.substring(0, fileName.lastIndexOf("."));
     }
-
+    
     /**
      * 字符串去除尾部 ”/“
      */
     public static String removeLastSlash(String str) {
         return str.endsWith(SLASH) ? str.substring(0, str.length() - 1) : str;
     }
-
+    
 }

@@ -22,28 +22,27 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(SlowSQLProperties.class)
 public class MybatisPlusConfiguration {
-
+    
     private final SlowSQLProperties slowSqlProperties;
-
+    
     public MybatisPlusConfiguration(SlowSQLProperties slowSqlProperties) {
         this.slowSqlProperties = slowSqlProperties;
     }
-
+    
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
-
+        
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-
+        
         // 乐观锁插件
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         // 分页插件 DbType：数据库类型(根据类型获取应使用的分页方言)
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
-//        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
-
+        // interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        
         return interceptor;
     }
-
-
+    
     /**
      * 自定义sql注入器
      */
@@ -51,8 +50,7 @@ public class MybatisPlusConfiguration {
     public MyLogicSqlInjector myLogicSqlInjector() {
         return new MyLogicSqlInjector();
     }
-
-
+    
     /**
      * 插入、更新 数据时自动填充默认值
      */
@@ -60,7 +58,7 @@ public class MybatisPlusConfiguration {
     public MyMetaObjectHandler myMetaObjectHandler() {
         return new MyMetaObjectHandler();
     }
-
+    
     /**
      * 注入mybatis插件 统计SQL执行耗时
      */

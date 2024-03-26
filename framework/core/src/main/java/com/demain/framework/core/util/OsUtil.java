@@ -8,26 +8,26 @@ package com.demain.framework.core.util;
  */
 @SuppressWarnings("unused")
 public class OsUtil {
-
+    
     private static final String OS = System.getProperty("os.name").toLowerCase();
-
+    
     public static boolean isLinux() {
         return OS.contains("linux");
     }
-
+    
     @SuppressWarnings("all")
     public static boolean isMacOS() {
         return OS.contains("mac") && OS.contains("os") && OS.contains("x");
     }
-
+    
     @SuppressWarnings("all")
     public static boolean isMacOSX() {
         return OS.contains("mac") && OS.contains("os") && OS.contains("x");
     }
-
+    
     @SuppressWarnings("all")
     public static boolean isWindows() {
         return OS.contains("windows");
     }
-
+    
 }

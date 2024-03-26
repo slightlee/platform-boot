@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-12-14
  */
 public interface PlatformUserRoleService extends IService<PlatformUserRole> {
-
+    
 }
