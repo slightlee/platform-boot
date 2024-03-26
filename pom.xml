@@ -19,6 +19,7 @@
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
+        <spotless-maven-plugin.version>2.34.0</spotless-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -33,4 +34,26 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <!-- spotless插件 -->
+            <!--此插件用于格式化代码，mvn spotless:check mvn spotless:apply -->
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless-maven-plugin.version}</version>
+                <configuration>
+                    <java>
+                        <eclipse>
+                            <file>${maven.multiModuleProjectDirectory}/etc/checkstyle/spotless_formatter.xml</file>
+                        </eclipse>
+                        <!-- 我这里没添加头要是需要就添加上 -->
+                        <!--                        <licenseHeader>-->
+                        <!--                            <file>${maven.multiModuleProjectDirectory}/etc/checkstyle/license-header</file>-->
+                        <!--                        </licenseHeader>-->
+                    </java>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
