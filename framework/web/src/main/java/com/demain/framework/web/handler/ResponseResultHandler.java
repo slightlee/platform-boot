@@ -19,8 +19,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * 统一处理响应体，用Result.data静态方法包装，
- * 在API接口使用时就可以直接返回原始类型
+ * 统一处理响应体，用Result.data静态方法包装， 在API接口使用时就可以直接返回原始类型
  */
 @RestControllerAdvice
 public class ResponseResultHandler<T extends Serializable> implements ResponseBodyAdvice<T> {
@@ -40,8 +39,9 @@ public class ResponseResultHandler<T extends Serializable> implements ResponseBo
     }
     
     @Override
-    public T beforeBodyWrite(T body, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest,
-                             ServerHttpResponse serverHttpResponse) {
+    public T beforeBodyWrite(T body, MethodParameter methodParameter, MediaType mediaType,
+            Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest,
+            ServerHttpResponse serverHttpResponse) {
         // 异常响应体则直接返回code+message的消息体
         if (body instanceof Result) {
             return body;

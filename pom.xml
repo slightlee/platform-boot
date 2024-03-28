@@ -44,6 +44,7 @@
                 <version>${spotless-maven-plugin.version}</version>
                 <configuration>
                     <java>
+                        <!-- 添加格式化规则 -->
                         <eclipse>
                             <file>${maven.multiModuleProjectDirectory}/etc/checkstyle/spotless_formatter.xml</file>
                         </eclipse>
@@ -51,6 +52,8 @@
                         <!--                        <licenseHeader>-->
                         <!--                            <file>${maven.multiModuleProjectDirectory}/etc/checkstyle/license-header</file>-->
                         <!--                        </licenseHeader>-->
+                        <!-- 移除无用import包 -->
+                        <removeUnusedImports/>
                     </java>
                 </configuration>
             </plugin>

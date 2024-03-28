@@ -69,7 +69,8 @@ public class JacksonConfiguration {
         javaTimeModule.addDeserializer(Date.class, new JsonDeserializer<Date>() {
             
             @Override
-            public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            public Date deserialize(JsonParser jsonParser,
+                    DeserializationContext deserializationContext) throws IOException {
                 String date = jsonParser.getText();
                 try {
                     return simpleDateFormat.parse(date);
@@ -91,7 +92,8 @@ public class JacksonConfiguration {
     private class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
         
         @Override
-        public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(LocalDateTime value, JsonGenerator gen,
+                SerializerProvider serializers) throws IOException {
             gen.writeString(value.format(DATETIME_FORMATTER));
         }
     }

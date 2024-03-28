@@ -39,7 +39,7 @@ public class ImageUtil {
     /**
      * 保存BufferedImage图片
      *
-     * @param image      图片
+     * @param image 图片
      * @param outputPath 保存路径
      * @throws IOException 异常
      */
@@ -49,10 +49,9 @@ public class ImageUtil {
     }
     
     /**
-     * 保存http图片
-     * {@code} 注释可以帮助防止某些编辑器或静态分析工具误认为其中的http是一个链接
+     * 保存http图片 {@code} 注释可以帮助防止某些编辑器或静态分析工具误认为其中的http是一个链接
      *
-     * @param imageUrl        图片地址(eg: {@code http://xxx.com/xxx.png})
+     * @param imageUrl 图片地址(eg: {@code http://xxx.com/xxx.png})
      * @param destinationPath 保存路径
      * @throws IOException 异常
      */

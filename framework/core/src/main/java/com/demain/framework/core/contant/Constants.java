@@ -3,7 +3,7 @@ package com.demain.framework.core.contant;
 public interface Constants {
     
     /**
-     *  有序
+     * 有序
      */
     Integer SORT = 1;
     

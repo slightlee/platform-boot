@@ -17,6 +17,7 @@ public interface PlatformUserMapper extends BaseMapper<PlatformUser> {
     
     /**
      * 用户角色标识
+     * 
      * @param userId 用户ID
      * @return list
      */

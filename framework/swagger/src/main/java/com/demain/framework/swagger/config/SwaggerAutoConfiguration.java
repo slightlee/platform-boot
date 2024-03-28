@@ -30,18 +30,26 @@ public class SwaggerAutoConfiguration {
     
     @Bean
     public OpenAPI customOpenApi() {
+        
         return new OpenAPI()
                 .info(new Info()
                         .title(properties.getTitle())
                         .description(properties.getDescription())
                         .contact(
-                                new Contact().name(properties.getName()).url(properties.getUrl()).email(properties.getEmail()))
+                                new Contact()
+                                        .name(properties.getName())
+                                        .url(properties.getUrl())
+                                        .email(properties.getEmail()))
                         .termsOfService(properties.getTermsOfService())
-                        .license(new License().name(properties.getLicenseName()).url(properties.getLicenseUrl()))
+                        .license(
+                                new License()
+                                        .name(properties.getLicenseName())
+                                        .url(properties.getLicenseUrl()))
                         .version(properties.getVersion()))
                 .externalDocs(new ExternalDocumentation()
                         .description("SpringDoc Full Documentation")
                         .url("https://springdoc.org/"));
+        
     }
     
 }

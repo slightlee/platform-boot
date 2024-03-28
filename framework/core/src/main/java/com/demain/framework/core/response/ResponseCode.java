@@ -1,11 +1,7 @@
 package com.demain.framework.core.response;
 
 /**
- * 状态码枚举
- * 错误码分为ABC三类:
- * A类对应客户端错误;
- * B类对应系统内部错误;
- * C类对应第三方接口调用错误;
+ * 状态码枚举 错误码分为ABC三类: A类对应客户端错误; B类对应系统内部错误; C类对应第三方接口调用错误;
  *
  * @author demain_lee
  * @since 0.0.1

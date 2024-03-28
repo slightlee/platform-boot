@@ -29,7 +29,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        PlatformUser platformUser = userService.getOne(Wrappers.<PlatformUser>lambdaQuery().eq(PlatformUser::getAccount, username));
+        PlatformUser platformUser =
+                userService.getOne(Wrappers.<PlatformUser>lambdaQuery().eq(PlatformUser::getAccount, username));
         if (platformUser == null) {
             throw new UsernameNotFoundException("用户不存在");
         }

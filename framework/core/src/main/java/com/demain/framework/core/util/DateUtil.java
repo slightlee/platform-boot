@@ -26,7 +26,7 @@ public class DateUtil {
     /**
      * 获取指定时区的 ZoneId
      *
-     * @param zoneId 时区ID，非 null  eg："Asia/Shanghai"
+     * @param zoneId 时区ID，非 null eg："Asia/Shanghai"
      * @return ZoneId
      */
     public static ZoneId getZoneId(String zoneId) {
@@ -47,7 +47,7 @@ public class DateUtil {
      * 时间戳 转为 指定时区 LocalDateTime
      *
      * @param timestamp 时间戳 1650718663
-     * @param zoneId    时区ID
+     * @param zoneId 时区ID
      * @return LocalDateTime
      */
     public static LocalDateTime timestampToZoneLocalDateTime(long timestamp, ZoneId zoneId) {
