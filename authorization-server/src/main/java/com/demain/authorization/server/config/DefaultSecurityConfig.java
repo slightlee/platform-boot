@@ -16,13 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
 public class DefaultSecurityConfig {
-
+    
     /**
      * 用于身份验证的 Spring Security 过滤链
      */
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-
+        
         // @formatter:off
         http
             .authorizeHttpRequests(authorize ->
@@ -48,8 +48,7 @@ public class DefaultSecurityConfig {
         // @formatter:on
         return http.build();
     }
-
-
+    
     /**
      * UserDetailsService 实例，用于检索要进行身份验证的用户
      */
@@ -61,5 +60,5 @@ public class DefaultSecurityConfig {
                 .build();
         return new InMemoryUserDetailsManager(userDetails);
     }
-
+    
 }

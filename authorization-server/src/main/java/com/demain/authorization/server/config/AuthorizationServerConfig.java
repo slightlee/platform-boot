@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +19,12 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -34,7 +41,7 @@ import java.util.UUID;
 
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
-
+    
     /**
      * 协议端点的 Spring Security 过滤链
      *
@@ -65,7 +72,7 @@ public class AuthorizationServerConfig {
         // @formatter:on
         return http.build();
     }
-
+    
     /**
      * 配置密码解析器，使用BCrypt的方式对密码进行加密和验证
      */
@@ -73,15 +80,15 @@ public class AuthorizationServerConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
+    
     /**
      * 用于管理客户端的 RegisteredClientRepository 实例
      *
      * @param passwordEncoder 密码管理器
      */
     @Bean
-    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
+    public RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations,
+            PasswordEncoder passwordEncoder) {
         // @formatter:off
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId("oidc-client")
@@ -101,10 +108,29 @@ public class AuthorizationServerConfig {
             //设置accessToken有效期
             .tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofHours(2)).build())
             .build();
+
+        JdbcRegisteredClientRepository clientRepository = new JdbcRegisteredClientRepository(jdbcOperations);
+        RegisteredClient registeredClient = clientRepository.findByClientId(oidcClient.getClientId());
+        if (registeredClient == null) {
+            clientRepository.save(oidcClient);
+        }
+
         // @formatter:on
         return new InMemoryRegisteredClientRepository(oidcClient);
     }
-
+    
+    @Bean
+    public OAuth2AuthorizationService auth2AuthorizationService(JdbcTemplate jdbcTemplate,
+            RegisteredClientRepository registeredClientRepository) {
+        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+    }
+    
+    @Bean
+    public OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService(JdbcTemplate jdbcTemplate,
+            RegisteredClientRepository registeredClientRepository) {
+        return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
+    }
+    
     /**
      * 用于签署访问令牌的 com.nimbusds.jose.jwk.source.JWKSource 实例
      */
@@ -114,8 +140,7 @@ public class AuthorizationServerConfig {
         JWKSet jwkSet = new JWKSet(rsaKey);
         return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
-
-
+    
     /**
      * 用于解码已签名访问令牌的 JwtDecoder 实例
      */
@@ -123,8 +148,7 @@ public class AuthorizationServerConfig {
     public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
     }
-
-
+    
     /**
      * 用于配置 Spring 授权服务器的 AuthorizationServerSettings 实例
      */
@@ -132,9 +156,9 @@ public class AuthorizationServerConfig {
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
     }
-
-//    @Bean
-//    public EmbeddedDatabase embeddedDatabase() {
+    
+    // @Bean
+    // public EmbeddedDatabase embeddedDatabase() {
 //        // @formatter:off
 //        return new EmbeddedDatabaseBuilder()
 //                .generateUniqueName(true)
@@ -145,6 +169,6 @@ public class AuthorizationServerConfig {
 //                .addScript("org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql")
 //                .build();
 //        // @formatter:on
-//    }
-
+    // }
+    
 }
