@@ -121,7 +121,7 @@ public class AuthorizationServerConfig {
         }
 
         // @formatter:on
-        return new InMemoryRegisteredClientRepository(oidcClient);
+        return clientRepository;
     }
     
     @Bean
