@@ -1,0 +1,9 @@
+#!/bin/sh
+# 自动应用 spotless 格式化规则
+mvn spotless:apply
+
+# 如果有未格式化的文件，则阻止提交
+if [ $? -ne 0 ]; then
+    echo "Spotless formatting failed. Please fix the issues and try committing again."
+    exit 1
+fi
