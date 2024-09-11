@@ -42,6 +42,8 @@ import java.util.UUID;
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
     
+    private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+    
     /**
      * 协议端点的 Spring Security 过滤链
      *
@@ -56,6 +58,9 @@ public class AuthorizationServerConfig {
         // @formatter:off
         http
             .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+                //自定义授权确认页面
+                .authorizationEndpoint(authorizationEndpoint ->
+                    authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
             .oidc(Customizer.withDefaults()); // 开启 openid connect
         //  未通过授权端点验证时重定向到登录页面
         http

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom consent page - Consent required</title>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
+    <script>
+        function cancelConsent() {
+            document.consent_form.reset();
+            document.consent_form.submit();
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row py-5">
+        <h1 class="text-center text-primary">授权登录</h1>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <p>
+                <!-- <span class="fw-bold text-primary" th:text="${clientId}"></span> -->
+                你将使用账号
+                <span class="fw-bold" th:text="${principalName}"></span>
+                授权登录
+            </p>
+        </div>
+    </div>
+
+    <div class="row pb-3">
+        <div class="col text-center">
+            <p>
+                授权后，应用将获得以下权限
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <form name="consent_form" method="post" th:action="${requestURI}">
+                <input type="hidden" name="client_id" th:value="${clientId}">
+                <input type="hidden" name="state" th:value="${state}">
+                <input th:if="${userCode}" type="hidden" name="user_code" th:value="${userCode}">
+
+                <div th:each="scope: ${scopes}" class="form-check py-1">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <input class="form-check-input"
+                               style="float: none"
+                               type="checkbox"
+                               name="scope"
+                               th:value="${scope.scope}"
+                               th:id="${scope.scope}">
+                        <label class="form-check-label fw-bold px-2" th:for="${scope.scope}" th:text="${scope.scope}"></label>
+                        <p class="text-primary mb-0 ms-2" th:text="${scope.description}"></p>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center pt-3">
+                    <button class="btn btn-primary" type="submit" id="submit-consent">
+                        授权
+                    </button>
+                    <button class="btn btn-secondary ms-3" type="button" id="cancel-consent" onclick="cancelConsent();">
+                        取消
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row pt-4">
+        <div class="col text-center">
+            <p>
+                <small>
+                    提供访问权限需要你的同意<br/>
+                    如果你不同意，请单击“取消”，在这种情况下，不会与应用程序共享任何信息
+                </small>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
