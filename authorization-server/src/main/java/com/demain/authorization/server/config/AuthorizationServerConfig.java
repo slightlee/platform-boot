@@ -1,5 +1,7 @@
 package com.demain.authorization.server.config;
 
+import com.demain.authorization.server.authentication.DeviceClientAuthenticationConverter;
+import com.demain.authorization.server.authentication.DeviceClientAuthenticationProvider;
 import com.demain.authorization.server.jose.Jwks;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -52,11 +54,32 @@ public class AuthorizationServerConfig {
      */
     @Bean
     @Order(1)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
+            RegisteredClientRepository registeredClientRepository,
+            AuthorizationServerSettings authorizationServerSettings) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        
+        DeviceClientAuthenticationConverter deviceClientAuthenticationConverter =
+                new DeviceClientAuthenticationConverter(
+                        authorizationServerSettings.getDeviceAuthorizationEndpoint());
+        DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
+                new DeviceClientAuthenticationProvider(registeredClientRepository);
+        
         // @formatter:off
         http
             .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+                // 设备码用户验证url(自定义用户验证页)
+                .deviceAuthorizationEndpoint(deviceAuthorizationEndpoint ->
+                        deviceAuthorizationEndpoint.verificationUri("/activate"))
+                // 验证设备码用户确认页面
+                .deviceVerificationEndpoint(deviceVerificationEndpoint ->
+                        deviceVerificationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
+                .clientAuthentication(clientAuthentication ->
+                    // 客户端认证添加设备码的converter和provider
+                    clientAuthentication
+                        .authenticationConverter(deviceClientAuthenticationConverter)
+                        .authenticationProvider(deviceClientAuthenticationProvider)
+                )
                 //自定义授权确认页面
                 .authorizationEndpoint(authorizationEndpoint ->
                     authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
@@ -117,6 +140,20 @@ public class AuthorizationServerConfig {
         RegisteredClient registeredClient = clientRepository.findByClientId(oidcClient.getClientId());
         if (registeredClient == null) {
             clientRepository.save(oidcClient);
+        }
+
+        // 设备码授权客户端
+        RegisteredClient deviceClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("device-client")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+                .authorizationGrantType(AuthorizationGrantType.DEVICE_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .scope("user.info")
+                .build();
+
+        RegisteredClient deviceRegisteredClient = clientRepository.findByClientId(deviceClient.getClientId());
+        if (deviceRegisteredClient == null) {
+            clientRepository.save(deviceClient);
         }
 
         // @formatter:on
