@@ -123,12 +123,26 @@ public class AuthorizationServerConfig {
         return clientRepository;
     }
     
+    /**
+     * 授权管理服务配置
+     *
+     * @param jdbcTemplate 数据源信息
+     * @param registeredClientRepository 客户端repository
+     * @return JdbcOAuth2AuthorizationService
+     */
     @Bean
     public OAuth2AuthorizationService auth2AuthorizationService(JdbcTemplate jdbcTemplate,
             RegisteredClientRepository registeredClientRepository) {
         return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
     }
     
+    /**
+     * 授权确认服务配置
+     *
+     * @param jdbcTemplate 数据源信息
+     * @param registeredClientRepository 客户端repository
+     * @return JdbcOAuth2AuthorizationConsentService
+     */
     @Bean
     public OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService(JdbcTemplate jdbcTemplate,
             RegisteredClientRepository registeredClientRepository) {

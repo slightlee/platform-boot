@@ -30,6 +30,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- 处理java.lang.ClassNotFoundException: org.springframework.security.cas.jackson2.CasJackson2Module问题 -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-cas</artifactId>
