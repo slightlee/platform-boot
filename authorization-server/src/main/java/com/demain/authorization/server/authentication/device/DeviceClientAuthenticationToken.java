@@ -1,4 +1,4 @@
-package com.demain.authorization.server.authentication;
+package com.demain.authorization.server.authentication.device;
 
 import java.util.Map;
 

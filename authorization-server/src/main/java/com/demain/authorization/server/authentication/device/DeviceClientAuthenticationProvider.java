@@ -1,4 +1,4 @@
-package com.demain.authorization.server.authentication;
+package com.demain.authorization.server.authentication.device;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,7 +1,7 @@
 package com.demain.authorization.server.config;
 
-import com.demain.authorization.server.authentication.DeviceClientAuthenticationConverter;
-import com.demain.authorization.server.authentication.DeviceClientAuthenticationProvider;
+import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationConverter;
+import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationProvider;
 import com.demain.authorization.server.jose.Jwks;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
