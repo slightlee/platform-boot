@@ -156,6 +156,41 @@ public class AuthorizationServerConfig {
             clientRepository.save(deviceClient);
         }
 
+        /**
+         * 由于公共客户端没法安全的保存 client_secret，所以在实际应用中，公共客户端 连 client_secret 都没必要存，
+         * 所以SpringAuthorizationServer定义一个 none 方式来表示这种情况。
+         * <p/>
+         * PKCE 是授权码流程的扩展，用于防止 CSRF 和授权码(code)注入攻击。
+         * PKCE 一般都伴随着授权码模式使用，可称之为 增强版授权码流程，又称 Authorization Code with PKCE Flow 。
+         * RegisteredClientRepository 主要用于管理第三方应用的信息 授权码模式：
+         * <p/>
+         * 获取code
+         * {@code http://127.0.0.1:9000/oauth2/authorize?client_id=pkce-client&response_type=code&scope=message.read+message.write&redirect_uri=http://127.0.0.1:8080/login/oauth2/code/pkce-client&code_challenge=awdQbZfQnpYJ4voM4HQe6LFITvHBK2OTde09taqVBFY&code_challenge_method=S256 }
+         */
+
+        // PKCE客户端
+        RegisteredClient pkceClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("pkce-client")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/pkce-client")
+                .clientSettings(ClientSettings.builder()
+                        // 公共客户端（NONE方式认证）必须开启 PKCE 流程
+                        .requireProofKey(Boolean.TRUE)
+                        // 授权码模式需要用户手动授权！false表示默认通过
+                        .requireAuthorizationConsent(true)
+                        .build())
+                // 自定scope
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                .scope("user.info")
+                .build();
+        RegisteredClient pkceRegisteredClient = clientRepository.findByClientId(pkceClient.getClientId());
+        if (pkceRegisteredClient == null) {
+            clientRepository.save(pkceClient);
+        }
+        
         // @formatter:on
         return clientRepository;
     }
