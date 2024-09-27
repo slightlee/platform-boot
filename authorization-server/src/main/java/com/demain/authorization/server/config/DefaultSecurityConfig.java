@@ -27,7 +27,7 @@ public class DefaultSecurityConfig {
         http
             .authorizeHttpRequests(authorize ->
                 authorize
-                    .requestMatchers("/assets/**", "/login","/oauth2/**").permitAll()
+                    .requestMatchers("/assets/**", "/login","/oauth2/**","/getCaptcha").permitAll()
                     .anyRequest().authenticated()
             )
             // 表单登录处理从授权服务器过滤链重定向到登录页面的过程

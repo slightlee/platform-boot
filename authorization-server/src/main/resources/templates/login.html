@@ -10,8 +10,8 @@
 <body>
 <div class="container">
     <form class="form-signin w-100 m-auto" method="post" th:action="@{/login}">
-        <div th:if="${param.error}" class="alert alert-danger" role="alert">
-            无效的用户名或者密码
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
         </div>
         <div th:if="${param.logout}" class="alert alert-success" role="alert">
             你已经退出登录
@@ -25,6 +25,17 @@
             <input type="password" id="password" name="password" class="form-control" required>
             <label for="password">密码</label>
         </div>
+
+        <div class="form-floating">
+            <input type="text" id="code" name="code" class="form-control" required>
+            <label for="code">验证码</label>
+        </div>
+
+        <div class="form-floating">
+            <img src="" id="code-image" onclick="getVerifyCode()"  alt=""/>
+        </div>
+
+        <input type="hidden" id="loginType" name="loginType" value="passwordLogin"/>
 
         <div class="form-floating">
             <button class="w-100 btn btn-lg btn-primary btn-block" type="submit">登录</button>
@@ -43,3 +54,24 @@
 </div>
 </body>
 </html>
+<script>
+
+    function getVerifyCode() {
+        let requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch(`${window.location.origin}/getCaptcha`, requestOptions)
+            .then(response => response.text())
+            .then(r => {
+                if (r) {
+                    let result = JSON.parse(r);
+                    document.getElementById('code-image').src = result.data
+                }
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    getVerifyCode();
+</script>
