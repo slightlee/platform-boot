@@ -1,0 +1,240 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #f0f0f0, #ffffff);
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-side {
+  flex: 6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  /* 从左侧白色到右侧浅蓝色渐变 */
+  background: linear-gradient(to right, #ffffff, #e6f7ff);
+  background-repeat: no-repeat;
+}
+
+.left-title {
+  /* 禁止选中文字 */
+  user-select: none;
+  font-size: 28px;
+  font-weight: 600;
+  color: #333333;
+  /* 字母间距 */
+  letter-spacing: 0.5px;
+  /* 轻微阴影效果 */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+
+.image-container {
+  width: 600px;
+  height: 600px;
+  background-image: url('/assets/images/bg_01.svg');
+  /* 让图片适应容器大小 */
+  background-size: cover;
+  /* 图片居中 */
+  background-position: center;
+  /* 防止图片重复 */
+  background-repeat: no-repeat;
+}
+
+.right-side {
+  flex: 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.login-form {
+  width: 400px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+}
+
+.login-form h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.login-form p {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.login-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form input {
+  height: 40px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form .code-group {
+  /* 使验证码输入框和图片在同一行显示 */
+  display: flex;
+  /* 垂直居中对齐 */
+  align-items: center;
+}
+
+.login-form .code-group input {
+  /* 输入框占据可用剩余空间 */
+  flex: 1;
+}
+
+.login-form .code-group img {
+  cursor: pointer;
+  width: auto;
+  height: 40px;
+  margin-bottom: 15px;
+}
+
+
+.login-form a.forgot-password {
+  font-size: 12px;
+  color: #007BFF;
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.login-form button {
+  font-size: 16px;
+  padding: 10px;
+  background-color: #007BFF;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-form form button:hover {
+  background-color: #0056b3;
+}
+
+/* .extra-options {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.extra-options button {
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+} */
+
+.social-login {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* .social-login p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+*/
+.social-login button {
+  margin: 0 5px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.social-login button img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.social-login button:hover {
+  background-color: #dedede;
+}
+
+/* 
+.signup {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup p {
+  font-size: 14px;
+}
+
+.signup a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.signup a:hover {
+  text-decoration: underline;
+} */
+
+
+/* 自适应布局 */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .left-side {
+    /* 隐藏左侧图片区域 */
+    display: none;
+  }
+
+  .right-side {
+    flex: 1;
+    padding: 0 20px;
+    justify-content: center;
+  }
+
+  .login-form {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .login-form h1 {
+    text-align: center;
+  }
+
+  .login-form button {
+    width: 100%;
+  }
+
+  /* .extra-options button, .social-login button {
+      width: 48%;
+    } */
+
+  .social-login button {
+    width: 48%;
+  }
+
+  .social-login button {
+    margin-bottom: 10px;
+  }
+}

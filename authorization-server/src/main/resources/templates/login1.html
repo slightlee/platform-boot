@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>统一认证中心</title>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/signin.css" th:href="@{/assets/css/signin.css}" />
+</head>
+<body>
+<div class="container">
+    <form class="form-signin w-100 m-auto" method="post" th:action="@{/login}">
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+        <div th:if="${param.logout}" class="alert alert-success" role="alert">
+            你已经退出登录
+        </div>
+        <h1 class="h3 mb-3 fw-normal">统一认证中心</h1>
+        <div class="form-floating">
+            <input type="text" id="username" name="username" class="form-control" required autofocus>
+            <label for="username">用户名</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" id="password" name="password" class="form-control" required>
+            <label for="password">密码</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="text" id="code" name="code" class="form-control" required>
+            <label for="code">验证码</label>
+        </div>
+
+        <div class="form-floating">
+            <img src="" id="code-image" onclick="getVerifyCode()"  alt=""/>
+        </div>
+
+        <input type="hidden" id="loginType" name="loginType" value="passwordLogin"/>
+
+        <div class="form-floating">
+            <button class="w-100 btn btn-lg btn-primary btn-block" type="submit">登录</button>
+        </div>
+
+        <div class="third-party-login">
+            <a class="btn btn-light" th:href="@{/oauth2/authorization/google-idp}" role="link">
+                <img th:src="@{/assets/images/google.png}" width="30" alt="Google快捷登录">
+            </a>
+            <a class="btn btn-light" th:href="@{/oauth2/authorization/github-idp}" role="link">
+                <img th:src="@{/assets/images/github.png}" width="30" alt="Github快捷登录">
+            </a>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>
+<script>
+
+    function getVerifyCode() {
+        let requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch(`${window.location.origin}/getCaptcha`, requestOptions)
+            .then(response => response.text())
+            .then(r => {
+                if (r) {
+                    let result = JSON.parse(r);
+                    document.getElementById('code-image').src = result.data
+                }
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    getVerifyCode();
+</script>
