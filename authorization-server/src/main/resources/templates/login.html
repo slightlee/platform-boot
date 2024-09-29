@@ -17,6 +17,9 @@
     </div>
     <div class="right-side">
         <div class="login-form">
+            <div th:if="${error}" class="error-message">
+                <span th:text="${error}"></span>
+            </div>
             <h1>欢迎回来 👋🏻</h1>
             <p>请输入您的帐户信息</p>
             <form th:action="@{/login}" method="POST">
@@ -26,6 +29,7 @@
                     <input type="text" id="code" name="code" placeholder="请输入验证码" required>
                     <img src="" id="code-image" onclick="getVerifyCode()" alt=""/>
                 </div>
+                <input type="hidden" id="loginType" name="loginType" value="passwordLogin"/>
                 <a href="#" class="forgot-password">忘记密码?</a>
                 <button type="submit">登录</button>
             </form>
