@@ -1,6 +1,7 @@
 #!/bin/sh
 # 自动应用 spotless 格式化规则
-mvn spotless:apply
+# mvn spotless:apply
+mvn com.diffplug.spotless:spotless-maven-plugin:2.34.0:apply
 
 # 如果有未格式化的文件，则阻止提交
 if [ $? -ne 0 ]; then
