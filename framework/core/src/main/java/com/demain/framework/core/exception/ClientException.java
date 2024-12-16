@@ -16,7 +16,7 @@ public class ClientException extends AbstractException {
     private static final long serialVersionUID = -1576347536081647705L;
     
     public ClientException(String message) {
-        this(ResponseCode.SERVICE_ERROR, message, null);
+        this(ResponseCode.CLIENT_ERROR, message, null);
     }
     
     public ClientException(ResponseCode responseCode) {
