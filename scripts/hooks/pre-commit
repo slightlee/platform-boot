@@ -8,3 +8,19 @@ if [ $? -ne 0 ]; then
     echo "Spotless formatting failed. Please fix the issues and try committing again."
     exit 1
 fi
+
+
+# 将格式化后的文件重新添加到 Git 缓存区
+git add -u
+
+# 提交前检查状态，防止未格式化的代码被提交
+#mvn spotless:check
+mvn com.diffplug.spotless:spotless-maven-plugin:2.34.0:check
+
+if [ $? -ne 0 ]; then
+    echo "Spotless check failed. Please fix the formatting issues and try again."
+    exit 1
+fi
+
+# 成功完成
+exit 0
