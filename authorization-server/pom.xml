@@ -73,6 +73,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.demain.platform</groupId>
+            <artifactId>platform-mybatis</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
