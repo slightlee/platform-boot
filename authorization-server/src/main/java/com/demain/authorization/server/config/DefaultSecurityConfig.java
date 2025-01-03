@@ -52,13 +52,13 @@ public class DefaultSecurityConfig {
     /**
      * UserDetailsService 实例，用于检索要进行身份验证的用户
      */
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails userDetails = User.withUsername("user")
-                .password(passwordEncoder.encode("123456"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(userDetails);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+//        UserDetails userDetails = User.withUsername("user")
+//                .password(passwordEncoder.encode("123456"))
+//                .roles("USER")
+//                .build();
+//        return new InMemoryUserDetailsManager(userDetails);
+//    }
     
 }
