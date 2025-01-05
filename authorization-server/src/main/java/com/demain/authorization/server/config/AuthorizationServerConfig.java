@@ -1,12 +1,8 @@
 package com.demain.authorization.server.config;
 
-import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationConverter;
-import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationProvider;
-import com.demain.authorization.server.jose.Jwks;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
+import java.time.Duration;
+import java.util.UUID;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -37,12 +33,24 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
-import java.time.Duration;
-import java.util.UUID;
+import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationConverter;
+import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationProvider;
+import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoAuthenticationConverter;
+import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoAuthenticationProvider;
+import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoService;
+import com.demain.authorization.server.jose.Jwks;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
+
+import jakarta.annotation.Resource;
 
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
     
+    @Resource
+    private CustomOidcUserInfoService customOidcUserInfoService;
     private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
     
     /**
@@ -56,7 +64,8 @@ public class AuthorizationServerConfig {
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
             RegisteredClientRepository registeredClientRepository,
-            AuthorizationServerSettings authorizationServerSettings) throws Exception {
+            AuthorizationServerSettings authorizationServerSettings,
+            OAuth2AuthorizationService authorizationService) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         
         DeviceClientAuthenticationConverter deviceClientAuthenticationConverter =
@@ -65,7 +74,7 @@ public class AuthorizationServerConfig {
         DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
                 new DeviceClientAuthenticationProvider(registeredClientRepository);
         
-        // @formatter:off
+    // @formatter:off
         http
             .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 // 设备码用户验证url(自定义用户验证页)
@@ -83,7 +92,13 @@ public class AuthorizationServerConfig {
                 //自定义授权确认页面
                 .authorizationEndpoint(authorizationEndpoint ->
                     authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
-            .oidc(Customizer.withDefaults()); // 开启 openid connect
+//            .oidc(Customizer.withDefaults()); // 开启 openid connect
+            .oidc(oidcCustomizer-> {
+              oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer -> {
+                userInfoEndpointCustomizer.userInfoRequestConverter(new CustomOidcUserInfoAuthenticationConverter(customOidcUserInfoService));
+                userInfoEndpointCustomizer.authenticationProvider(new CustomOidcUserInfoAuthenticationProvider(authorizationService));
+              });
+            });
         //  未通过授权端点验证时重定向到登录页面
         http
             .exceptionHandling(exception ->
@@ -116,7 +131,7 @@ public class AuthorizationServerConfig {
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations,
             PasswordEncoder passwordEncoder) {
-        // @formatter:off
+    // @formatter:off
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId("oidc-client")
             .clientSecret(passwordEncoder.encode("123456"))
@@ -216,8 +231,8 @@ public class AuthorizationServerConfig {
      * @return JdbcOAuth2AuthorizationConsentService
      */
     @Bean
-    public OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService(JdbcTemplate jdbcTemplate,
-            RegisteredClientRepository registeredClientRepository) {
+    public OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService(
+            JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
         return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
     }
     
@@ -249,7 +264,7 @@ public class AuthorizationServerConfig {
     
     // @Bean
     // public EmbeddedDatabase embeddedDatabase() {
-//        // @formatter:off
+  //        // @formatter:off
 //        return new EmbeddedDatabaseBuilder()
 //                .generateUniqueName(true)
 //                .setType(EmbeddedDatabaseType.H2)
