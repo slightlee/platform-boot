@@ -12,4 +12,9 @@ public class SecurityConstants {
      * 登录方式——账号密码登录
      */
     public static final String PASSWORD_LOGIN_TYPE = "passwordLogin";
+    
+    /**
+     * 密码模式（自定义）
+     */
+    public static final String GRANT_TYPE_PASSWORD = "password";
 }

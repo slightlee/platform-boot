@@ -2,11 +2,15 @@ package com.demain.authorization.server.config;
 
 import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationConverter;
 import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationProvider;
+import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationConverter;
+import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationProvider;
 import com.demain.authorization.server.jose.Jwks;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import jakarta.annotation.Resource;
+import org.apache.catalina.util.StandardSessionIdGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,16 +19,21 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.authorization.*;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -33,17 +42,32 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-@Configuration(proxyBeanMethods = false)
+/**
+ * 授权服务器配置
+ *
+ * @author demain_lee
+ * @since 2025/01/08
+ */
+@Configuration
 public class AuthorizationServerConfig {
     
     private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+    
+    @Resource
+    private UserDetailsService userDetailsService;
     
     /**
      * 协议端点的 Spring Security 过滤链
@@ -56,7 +80,9 @@ public class AuthorizationServerConfig {
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
             RegisteredClientRepository registeredClientRepository,
-            AuthorizationServerSettings authorizationServerSettings) throws Exception {
+            AuthorizationServerSettings authorizationServerSettings,
+            OAuth2AuthorizationService authorizationService,
+            OAuth2TokenGenerator<?> tokenGenerator) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         
         DeviceClientAuthenticationConverter deviceClientAuthenticationConverter =
@@ -83,7 +109,13 @@ public class AuthorizationServerConfig {
                 //自定义授权确认页面
                 .authorizationEndpoint(authorizationEndpoint ->
                     authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
-            .oidc(Customizer.withDefaults()); // 开启 openid connect
+                .tokenEndpoint(tokenEndpoint ->
+                    tokenEndpoint
+                        .accessTokenRequestConverter(
+                                new PasswordGrantAuthenticationConverter())
+                        .authenticationProvider(
+                                new PasswordGrantAuthenticationProvider(authorizationService, tokenGenerator)))
+                .oidc(Customizer.withDefaults()); // 开启 openid connect
         //  未通过授权端点验证时重定向到登录页面
         http
             .exceptionHandling(exception ->
@@ -191,6 +223,28 @@ public class AuthorizationServerConfig {
             clientRepository.save(pkceClient);
         }
         
+        // 密码模式客户端
+        RegisteredClient passwordClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("password-client")
+                .clientSecret(passwordEncoder.encode("123456"))
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .postLogoutRedirectUri("http://127.0.0.1:9000/")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                .scope("user.info")
+                // 客户端设置，设置用户需要确认授权，设置false后不需要确认
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                //设置accessToken有效期
+                .tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofHours(2)).build())
+                .build();
+        
+        RegisteredClient passwordRegisteredClient = clientRepository.findByClientId(passwordClient.getClientId());
+        if (passwordRegisteredClient == null) {
+            clientRepository.save(passwordClient);
+        }
+        
         // @formatter:on
         return clientRepository;
     }
@@ -245,6 +299,57 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
+    }
+    
+    /**
+     * 配置token生成器
+     * <p>
+     * 也可使用 OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator = OAuth2ConfigurerUtils.getTokenGenerator(http);
+     * <p>
+     * org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2ConfigurerUtils;
+     */
+    @Bean
+    OAuth2TokenGenerator<?> tokenGenerator(JWKSource<SecurityContext> jwkSource) {
+        JwtGenerator jwtGenerator = new JwtGenerator(new NimbusJwtEncoder(jwkSource));
+        jwtGenerator.setJwtCustomizer(jwtCustomizer());
+        OAuth2AccessTokenGenerator accessTokenGenerator = new OAuth2AccessTokenGenerator();
+        OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
+        return new DelegatingOAuth2TokenGenerator(
+                jwtGenerator, accessTokenGenerator, refreshTokenGenerator);
+    }
+    
+    @Bean
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+        
+        return context -> {
+            JwsHeader.Builder headers = context.getJwsHeader();
+            JwtClaimsSet.Builder claims = context.getClaims();
+            UserDetails userDetails = userDetailsService.loadUserByUsername(context.getPrincipal().getName());
+            if (context.getTokenType().equals(OAuth2TokenType.ACCESS_TOKEN)) {
+                // Customize headers/claims for access_token
+                claims.claims(claimsConsumer -> {
+                    claimsConsumer.merge("scope", userDetails.getAuthorities(), (scope, authorities) -> {
+                        Set<String> scopeSet = (Set<String>) scope;
+                        Set<String> cloneSet = scopeSet.stream().map(String::new).collect(Collectors.toSet());
+                        Collection<SimpleGrantedAuthority> simpleGrantedAuthorities =
+                                (Collection<SimpleGrantedAuthority>) authorities;
+                        simpleGrantedAuthorities.forEach(simpleGrantedAuthority -> {
+                            if (!cloneSet.contains(simpleGrantedAuthority.getAuthority())) {
+                                cloneSet.add(simpleGrantedAuthority.getAuthority());
+                            }
+                        });
+                        return cloneSet;
+                    });
+                });
+                
+            } else if (context.getTokenType().getValue().equals(OidcParameterNames.ID_TOKEN)) {
+                // Customize headers/claims for id_token
+                claims.claim(IdTokenClaimNames.AUTH_TIME, Date.from(Instant.now()));
+                StandardSessionIdGenerator standardSessionIdGenerator = new StandardSessionIdGenerator();
+                claims.claim("sid", standardSessionIdGenerator.generateSessionId());
+                claims.claim("username", userDetails.getUsername());
+            }
+        };
     }
     
     // @Bean
