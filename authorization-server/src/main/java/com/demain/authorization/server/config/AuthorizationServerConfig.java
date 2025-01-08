@@ -2,6 +2,9 @@ package com.demain.authorization.server.config;
 
 import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationConverter;
 import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationProvider;
+import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoAuthenticationConverter;
+import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoAuthenticationProvider;
+import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoService;
 import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationConverter;
 import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationProvider;
 import com.demain.authorization.server.jose.Jwks;
@@ -64,10 +67,14 @@ import java.util.stream.Collectors;
 @Configuration
 public class AuthorizationServerConfig {
     
+  
     private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
     
     @Resource
     private UserDetailsService userDetailsService;
+    
+    @Resource
+    private CustomOidcUserInfoService customOidcUserInfoService;
     
     /**
      * 协议端点的 Spring Security 过滤链
@@ -115,7 +122,13 @@ public class AuthorizationServerConfig {
                                 new PasswordGrantAuthenticationConverter())
                         .authenticationProvider(
                                 new PasswordGrantAuthenticationProvider(authorizationService, tokenGenerator)))
-                .oidc(Customizer.withDefaults()); // 开启 openid connect
+//            .oidc(Customizer.withDefaults()); // 开启 openid connect
+            .oidc(oidcCustomizer-> {
+              oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer -> {
+                userInfoEndpointCustomizer.userInfoRequestConverter(new CustomOidcUserInfoAuthenticationConverter(customOidcUserInfoService));
+                userInfoEndpointCustomizer.authenticationProvider(new CustomOidcUserInfoAuthenticationProvider(authorizationService));
+              });
+            });
         //  未通过授权端点验证时重定向到登录页面
         http
             .exceptionHandling(exception ->
