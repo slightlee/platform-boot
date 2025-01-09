@@ -20,12 +20,16 @@ import org.springframework.security.oauth2.server.authorization.oidc.authenticat
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
 import org.springframework.util.Assert;
 
+/**
+ * 自定义oidc用户信息认证提供者
+ *
+ * @author demain_lee
+ * @since 2025/01/09
+ */
 public class CustomOidcUserInfoAuthenticationProvider implements AuthenticationProvider {
     
-    private final Log logger = LogFactory.getLog(this.getClass());
     private final OAuth2AuthorizationService authorizationService;
-    private Function<OidcUserInfoAuthenticationContext, CustomOidcUserInfo> userInfoMapper =
-            new CustomOidcUserInfoAuthenticationProvider.DefaultOidcUserInfoMapper();
+    private final Log logger = LogFactory.getLog(this.getClass());
     
     public CustomOidcUserInfoAuthenticationProvider(OAuth2AuthorizationService authorizationService) {
         Assert.notNull(authorizationService, "authorizationService cannot be null");
@@ -53,35 +57,20 @@ public class CustomOidcUserInfoAuthenticationProvider implements AuthenticationP
                 if (this.logger.isTraceEnabled()) {
                     this.logger.trace("Retrieved authorization with access token");
                 }
-                
-                OAuth2Authorization.Token<OAuth2AccessToken> authorizedAccessToken =
-                        authorization.getAccessToken();
+                OAuth2Authorization.Token<OAuth2AccessToken> authorizedAccessToken = authorization.getAccessToken();
                 if (!authorizedAccessToken.isActive()) {
                     throw new OAuth2AuthenticationException("invalid_token");
-                } else if (!((OAuth2AccessToken) authorizedAccessToken.getToken()).getScopes()
-                        .contains("openid")) {
-                    throw new OAuth2AuthenticationException("insufficient_scope");
                 } else {
-                    OAuth2Authorization.Token<OidcIdToken> idToken =
-                            authorization.getToken(OidcIdToken.class);
-                    if (idToken == null) {
-                        throw new OAuth2AuthenticationException("invalid_token");
-                    } else {
-                        if (this.logger.isTraceEnabled()) {
-                            this.logger.trace("Validated user info request");
-                        }
-                        
-                        OidcUserInfoAuthenticationContext authenticationContext =
-                                OidcUserInfoAuthenticationContext.with(userInfoAuthentication)
-                                        .accessToken((OAuth2AccessToken) authorizedAccessToken.getToken())
-                                        .authorization(authorization).build();
-                        OidcUserInfo userInfo = (OidcUserInfo) this.userInfoMapper.apply(authenticationContext);
-                        if (this.logger.isTraceEnabled()) {
-                            this.logger.trace("Authenticated user info request");
-                        }
-                        
-                        return new OidcUserInfoAuthenticationToken(accessTokenAuthentication, userInfo);
+                    CustomOidcUserInfo customOidcUserInfo = (CustomOidcUserInfo) userInfoAuthentication.getUserInfo();
+                    Set<String> scopeSet = (HashSet<String>) authorizedAccessToken.getClaims().get("scope");
+                    Map<String, Object> claims =
+                            DefaultOidcUserInfoMapper.getClaimsRequestedByScope(customOidcUserInfo.getClaims(),
+                                    scopeSet);
+                    if (this.logger.isTraceEnabled()) {
+                        this.logger.trace("Authenticated user info request");
                     }
+                    return new OidcUserInfoAuthenticationToken(accessTokenAuthentication,
+                            new CustomOidcUserInfo(claims));
                 }
             }
         } else {
@@ -94,24 +83,15 @@ public class CustomOidcUserInfoAuthenticationProvider implements AuthenticationP
         return OidcUserInfoAuthenticationToken.class.isAssignableFrom(authentication);
     }
     
-    public void setUserInfoMapper(
-            Function<OidcUserInfoAuthenticationContext, CustomOidcUserInfo> userInfoMapper) {
-        Assert.notNull(userInfoMapper, "userInfoMapper cannot be null");
-        this.userInfoMapper = userInfoMapper;
-    }
-    
     private static final class DefaultOidcUserInfoMapper
             implements Function<OidcUserInfoAuthenticationContext, CustomOidcUserInfo> {
         
         private static final List<String> EMAIL_CLAIMS = Arrays.asList("email", "email_verified");
-        private static final List<String> PHONE_CLAIMS =
-                Arrays.asList("phone_number", "phone_number_verified");
+        private static final List<String> PHONE_CLAIMS = Arrays.asList("phone_number", "phone_number_verified");
         private static final List<String> PROFILE_CLAIMS =
-                Arrays.asList("name", "username", "status", "profile");
+                Arrays.asList("name", "username", "nickname", "avatar", "profile");
         
-        private DefaultOidcUserInfoMapper() {
-        }
-        
+        @Override
         public CustomOidcUserInfo apply(OidcUserInfoAuthenticationContext authenticationContext) {
             OAuth2Authorization authorization = authenticationContext.getAuthorization();
             OidcIdToken idToken = (OidcIdToken) authorization.getToken(OidcIdToken.class).getToken();
@@ -125,9 +105,6 @@ public class CustomOidcUserInfoAuthenticationProvider implements AuthenticationP
                 Set<String> requestedScopes) {
             Set<String> scopeRequestedClaimNames = new HashSet<>(32);
             scopeRequestedClaimNames.add("sub");
-            if (requestedScopes.contains("address")) {
-                scopeRequestedClaimNames.add("address");
-            }
             
             if (requestedScopes.contains("email")) {
                 scopeRequestedClaimNames.addAll(EMAIL_CLAIMS);

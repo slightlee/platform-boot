@@ -1,24 +1,28 @@
 package com.demain.authorization.server.authentication.oidc;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.demain.authorization.server.customize.entity.PlatformUser;
-import com.demain.authorization.server.customize.mapper.PlatformUserMapper;
-import jakarta.annotation.Resource;
+import com.demain.authorization.server.customize.service.PlatformUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+/**
+ * 自定义用户信息服务
+ *
+ * @author demain_lee
+ * @since 2025/01/09
+ */
 @Service
 public class CustomOidcUserInfoService {
     
-    @Resource
-    private PlatformUserMapper platformUserMapper;
+    private final PlatformUserService platformUserService;
+    
+    public CustomOidcUserInfoService(PlatformUserService platformUserService) {
+        this.platformUserService = platformUserService;
+    }
     
     public CustomOidcUserInfo loadUserInfo(String username) {
-        
-        PlatformUser platformUser = platformUserMapper.selectOne(Wrappers.<PlatformUser>lambdaQuery()
-                .eq(PlatformUser::getAccount, username).eq(PlatformUser::getIsDelete, 0));
-        
+        PlatformUser platformUser = platformUserService.loadUserInfo(username);
         return new CustomOidcUserInfo(this.createUserInfo(platformUser));
     }
     
@@ -26,10 +30,12 @@ public class CustomOidcUserInfoService {
         return CustomOidcUserInfo.cusBuilder()
                 .userName(platformUser.getAccount())
                 .name(platformUser.getRealName())
+                .nickname(platformUser.getNickname())
                 .email(platformUser.getEmail())
                 .phoneNumber(platformUser.getPhone())
+                .avatar(platformUser.getAvatar())
                 .status(platformUser.getStatus())
-                .profile("http://www.xxxx.com/")
+//                .profile("https://www.xxxx.com/")
                 .build().getClaims();
     }
 }

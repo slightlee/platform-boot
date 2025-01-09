@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 /**
  * 自定义oidc用户信息
- * 
+ *
  * @author demain_lee
  * @since 2025/01/05
  */
@@ -47,8 +47,8 @@ public class CustomOidcUserInfo extends OidcUserInfo {
         return this.getClaims().hashCode();
     }
     
-    public static CustomOidcUserInfo.Builder cusBuilder() {
-        return new CustomOidcUserInfo.Builder();
+    public static Builder cusBuilder() {
+        return new Builder();
     }
     
     public static final class Builder {
@@ -58,37 +58,45 @@ public class CustomOidcUserInfo extends OidcUserInfo {
         private Builder() {
         }
         
-        public CustomOidcUserInfo.Builder claim(String name, Object value) {
+        public Builder claim(String name, Object value) {
             this.claims.put(name, value);
             return this;
         }
         
-        public CustomOidcUserInfo.Builder claims(Consumer<Map<String, Object>> claimsConsumer) {
+        public Builder claims(Consumer<Map<String, Object>> claimsConsumer) {
             claimsConsumer.accept(this.claims);
             return this;
         }
         
-        public CustomOidcUserInfo.Builder userName(String username) {
+        public Builder userName(String username) {
             return this.claim("username", username);
         }
         
-        public CustomOidcUserInfo.Builder name(String name) {
+        public Builder name(String name) {
             return this.claim("name", name);
         }
         
-        public CustomOidcUserInfo.Builder status(Integer status) {
+        public Builder nickname(String nickname) {
+            return this.claim("nickname", nickname);
+        }
+        
+        public Builder avatar(String avatar) {
+            return this.claim("avatar", avatar);
+        }
+        
+        public Builder status(Integer status) {
             return this.claim("status", status);
         }
         
-        public CustomOidcUserInfo.Builder phoneNumber(String phoneNumber) {
+        public Builder phoneNumber(String phoneNumber) {
             return this.claim("phone_number", phoneNumber);
         }
         
-        public CustomOidcUserInfo.Builder email(String email) {
+        public Builder email(String email) {
             return this.claim("email", email);
         }
         
-        public CustomOidcUserInfo.Builder profile(String profile) {
+        public Builder profile(String profile) {
             return this.claim("profile", profile);
         }
         
