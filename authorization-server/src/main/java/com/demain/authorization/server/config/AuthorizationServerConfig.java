@@ -12,7 +12,6 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import jakarta.annotation.Resource;
 import org.apache.catalina.util.StandardSessionIdGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +31,6 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
-import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
@@ -67,14 +65,17 @@ import java.util.stream.Collectors;
 @Configuration
 public class AuthorizationServerConfig {
     
-  
     private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
     
-    @Resource
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
     
-    @Resource
-    private CustomOidcUserInfoService customOidcUserInfoService;
+    private final CustomOidcUserInfoService customOidcUserInfoService;
+    
+    public AuthorizationServerConfig(UserDetailsService userDetailsService,
+            CustomOidcUserInfoService customOidcUserInfoService) {
+        this.userDetailsService = userDetailsService;
+        this.customOidcUserInfoService = customOidcUserInfoService;
+    }
     
     /**
      * 协议端点的 Spring Security 过滤链
@@ -121,12 +122,15 @@ public class AuthorizationServerConfig {
                         .accessTokenRequestConverter(
                                 new PasswordGrantAuthenticationConverter())
                         .authenticationProvider(
-                                new PasswordGrantAuthenticationProvider(authorizationService, tokenGenerator)))
+                                new PasswordGrantAuthenticationProvider(userDetailsService,passwordEncoder(),
+                                        authorizationService, tokenGenerator)))
 //            .oidc(Customizer.withDefaults()); // 开启 openid connect
             .oidc(oidcCustomizer-> {
               oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer -> {
-                userInfoEndpointCustomizer.userInfoRequestConverter(new CustomOidcUserInfoAuthenticationConverter(customOidcUserInfoService));
-                userInfoEndpointCustomizer.authenticationProvider(new CustomOidcUserInfoAuthenticationProvider(authorizationService));
+                userInfoEndpointCustomizer.userInfoRequestConverter(
+                        new CustomOidcUserInfoAuthenticationConverter(customOidcUserInfoService));
+                userInfoEndpointCustomizer.authenticationProvider(
+                        new CustomOidcUserInfoAuthenticationProvider(authorizationService));
               });
             });
         //  未通过授权端点验证时重定向到登录页面
@@ -335,7 +339,6 @@ public class AuthorizationServerConfig {
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
         
         return context -> {
-            JwsHeader.Builder headers = context.getJwsHeader();
             JwtClaimsSet.Builder claims = context.getClaims();
             UserDetails userDetails = userDetailsService.loadUserByUsername(context.getPrincipal().getName());
             if (context.getTokenType().equals(OAuth2TokenType.ACCESS_TOKEN)) {

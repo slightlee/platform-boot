@@ -53,10 +53,10 @@ public class PasswordGrantAuthenticationProvider implements AuthenticationProvid
     private static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
     
     private static final OAuth2TokenType ID_TOKEN_TOKEN_TYPE = new OAuth2TokenType(OidcParameterNames.ID_TOKEN);
-    @Resource
-    private UserDetailsService userDetailsService;
-    @Resource
-    private PasswordEncoder passwordEncoder;
+
+    private final UserDetailsService userDetailsService;
+
+    private final PasswordEncoder passwordEncoder;
     
     private final Log logger = LogFactory.getLog(getClass());
     
@@ -64,8 +64,11 @@ public class PasswordGrantAuthenticationProvider implements AuthenticationProvid
     
     private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
     
-    public PasswordGrantAuthenticationProvider(OAuth2AuthorizationService authorizationService,
+    public PasswordGrantAuthenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder,
+            OAuth2AuthorizationService authorizationService,
             OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
         Assert.notNull(authorizationService, "authorizationService cannot be null");
         Assert.notNull(tokenGenerator, "tokenGenerator cannot be null");
         this.authorizationService = authorizationService;
