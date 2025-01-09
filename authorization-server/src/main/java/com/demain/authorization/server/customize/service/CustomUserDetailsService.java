@@ -30,8 +30,13 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 根据 账号 或者 手机号 或者 邮箱 查询用户信息
         PlatformUser platformUser = platformUserMapper.selectOne(Wrappers.<PlatformUser>lambdaQuery()
                 .eq(PlatformUser::getAccount, username)
+                .or()
+                .eq(PlatformUser::getPhone, username)
+                .or()
+                .eq(PlatformUser::getEmail, username)
                 .eq(PlatformUser::getIsDelete, 0));
         if (platformUser == null) {
             throw new UsernameNotFoundException("账号不存在");

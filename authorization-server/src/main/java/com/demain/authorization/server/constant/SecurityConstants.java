@@ -17,4 +17,19 @@ public class SecurityConstants {
      * 密码模式（自定义）
      */
     public static final String GRANT_TYPE_PASSWORD = "password";
+    
+    /**
+     * 短信验证码模式（自定义）
+     */
+    public static final String GRANT_TYPE_SMS = "sms_verification_code";
+    
+    /**
+     * 短信验证码
+     */
+    public static final String SMS_VERIFICATION_CODE = "verificationCode";
+    
+    /**
+     * 短信验证码默认值
+     */
+    public static final String SMS_CODE_VALUE = "6666";
 }

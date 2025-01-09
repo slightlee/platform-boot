@@ -1,5 +1,6 @@
 package com.demain.authorization.server.config;
 
+import com.demain.authorization.server.authentication.core.CustomAuthorizationGrantType;
 import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationConverter;
 import com.demain.authorization.server.authentication.device.DeviceClientAuthenticationProvider;
 import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoAuthenticationConverter;
@@ -7,6 +8,8 @@ import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoAut
 import com.demain.authorization.server.authentication.oidc.CustomOidcUserInfoService;
 import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationConverter;
 import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationProvider;
+import com.demain.authorization.server.authentication.sms.SmsGrantAuthenticationConverter;
+import com.demain.authorization.server.authentication.sms.SmsGrantAuthenticationProvider;
 import com.demain.authorization.server.jose.Jwks;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -117,6 +120,7 @@ public class AuthorizationServerConfig {
                 //自定义授权确认页面
                 .authorizationEndpoint(authorizationEndpoint ->
                     authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
+                // 密码模式
                 .tokenEndpoint(tokenEndpoint ->
                     tokenEndpoint
                         .accessTokenRequestConverter(
@@ -124,14 +128,21 @@ public class AuthorizationServerConfig {
                         .authenticationProvider(
                                 new PasswordGrantAuthenticationProvider(userDetailsService,passwordEncoder(),
                                         authorizationService, tokenGenerator)))
-//            .oidc(Customizer.withDefaults()); // 开启 openid connect
-            .oidc(oidcCustomizer-> {
-              oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer -> {
-                userInfoEndpointCustomizer.userInfoRequestConverter(
-                        new CustomOidcUserInfoAuthenticationConverter(customOidcUserInfoService));
-                userInfoEndpointCustomizer.authenticationProvider(
-                        new CustomOidcUserInfoAuthenticationProvider(authorizationService));
-              });
+                // 短信验证码模式
+                .tokenEndpoint(tokenEndpoint -> 
+                        tokenEndpoint.accessTokenRequestConverter(
+                                new SmsGrantAuthenticationConverter())
+                                .authenticationProvider(
+                                new SmsGrantAuthenticationProvider(userDetailsService, 
+                                        authorizationService, tokenGenerator)))
+    //            .oidc(Customizer.withDefaults()); // 开启 openid connect
+                .oidc(oidcCustomizer-> {
+                  oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer -> {
+                    userInfoEndpointCustomizer.userInfoRequestConverter(
+                            new CustomOidcUserInfoAuthenticationConverter(customOidcUserInfoService));
+                    userInfoEndpointCustomizer.authenticationProvider(
+                            new CustomOidcUserInfoAuthenticationProvider(authorizationService));
+                  });
             });
         //  未通过授权端点验证时重定向到登录页面
         http
@@ -260,6 +271,27 @@ public class AuthorizationServerConfig {
         RegisteredClient passwordRegisteredClient = clientRepository.findByClientId(passwordClient.getClientId());
         if (passwordRegisteredClient == null) {
             clientRepository.save(passwordClient);
+        }
+        
+        // 短信验证码模式客户端
+        RegisteredClient smsCodeClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("sms-code-client")
+                .clientSecret(passwordEncoder.encode("123456"))
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(CustomAuthorizationGrantType.SMS_VERIFICATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .postLogoutRedirectUri("http://127.0.0.1:9000/")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                // 客户端设置，设置用户需要确认授权，设置false后不需要确认
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                //设置accessToken有效期
+                .tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofHours(2)).build())
+                .build();
+        
+        RegisteredClient smsCodeRegisteredClient = clientRepository.findByClientId(smsCodeClient.getClientId());
+        if (smsCodeRegisteredClient == null) {
+            clientRepository.save(smsCodeClient);
         }
         
         // @formatter:on
