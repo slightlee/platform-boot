@@ -40,6 +40,8 @@ public enum ResponseCode {
     USER_LOGIN_EXPIRED("A0230", "用户登录已过期"),
     USER_VERIFICATION_CODE_INCORRECT("A0240", "用户验证码错误"),
     USER_VERIFICATION_CODE_ATTEMPTS_EXCEEDED("A0241", "用户验证码尝试次数超限"),
+    INVALID_CLIENT("A0261", "无效的客户端"),
+    UNSUPPORTED_GRANT_TYPE("A0262", "不支持的授权类型"),
     
     // A03XX 访问权限相关
     UNAUTHORIZED_ACCESS("A0301", "访问未授权"),
