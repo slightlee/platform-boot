@@ -1,6 +1,6 @@
 package com.demain.authorization.server.authentication.password;
 
-import jakarta.annotation.Resource;
+import com.demain.authorization.server.response.ResponseCode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -53,9 +53,9 @@ public class PasswordGrantAuthenticationProvider implements AuthenticationProvid
     private static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
     
     private static final OAuth2TokenType ID_TOKEN_TOKEN_TYPE = new OAuth2TokenType(OidcParameterNames.ID_TOKEN);
-
+    
     private final UserDetailsService userDetailsService;
-
+    
     private final PasswordEncoder passwordEncoder;
     
     private final Log logger = LogFactory.getLog(getClass());
@@ -65,8 +65,8 @@ public class PasswordGrantAuthenticationProvider implements AuthenticationProvid
     private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
     
     public PasswordGrantAuthenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder,
-            OAuth2AuthorizationService authorizationService,
-            OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+                                               OAuth2AuthorizationService authorizationService,
+                                               OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         Assert.notNull(authorizationService, "authorizationService cannot be null");
@@ -108,7 +108,8 @@ public class PasswordGrantAuthenticationProvider implements AuthenticationProvid
         
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new OAuth2AuthenticationException("密码错误");
+            throw new OAuth2AuthenticationException(new OAuth2Error(ResponseCode.USER_PASSWORD_INCORRECT.getCode(),
+                    ResponseCode.USER_PASSWORD_INCORRECT.getMessage(), null));
         }
         
         // 构建一个已认证的对象UsernamePasswordAuthenticationToken
@@ -160,7 +161,7 @@ public class PasswordGrantAuthenticationProvider implements AuthenticationProvid
         // ----- Refresh token -----
         OAuth2RefreshToken refreshToken = null;
         if (registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.REFRESH_TOKEN) &&
-                // Do not issue refresh token to public client
+        // Do not issue refresh token to public client
                 !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
             tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
             OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(tokenContext);

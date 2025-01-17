@@ -22,8 +22,8 @@ public class PasswordGrantAuthenticationToken extends OAuth2AuthorizationGrantAu
     private static final long serialVersionUID = SpringAuthorizationServerVersion.SERIAL_VERSION_UID;
     
     protected PasswordGrantAuthenticationToken(
-            Authentication clientPrincipal,
-            @Nullable Map<String, Object> additionalParameters) {
+                                               Authentication clientPrincipal,
+                                               @Nullable Map<String, Object> additionalParameters) {
         super(new AuthorizationGrantType(SecurityConstants.GRANT_TYPE_PASSWORD), clientPrincipal, additionalParameters);
     }
 }

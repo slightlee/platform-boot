@@ -1,6 +1,7 @@
 package com.demain.authorization.server.authentication.sms;
 
 import com.demain.authorization.server.constant.SecurityConstants;
+import com.demain.authorization.server.response.ResponseCode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -63,8 +64,8 @@ public class SmsGrantAuthenticationProvider implements AuthenticationProvider {
     private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
     
     public SmsGrantAuthenticationProvider(UserDetailsService userDetailsService,
-            OAuth2AuthorizationService authorizationService,
-            OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+                                          OAuth2AuthorizationService authorizationService,
+                                          OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
         this.userDetailsService = userDetailsService;
         Assert.notNull(authorizationService, "authorizationService cannot be null");
         Assert.notNull(tokenGenerator, "tokenGenerator cannot be null");
@@ -105,7 +106,9 @@ public class SmsGrantAuthenticationProvider implements AuthenticationProvider {
         
         // 实际业务场景中，短信验证码应该通过短信服务发送给用户，用户输入后再进行校验
         if (!SecurityConstants.SMS_CODE_VALUE.equals(smsVerificationCode)) {
-            throw new OAuth2AuthenticationException("短信验证码错误");
+            throw new OAuth2AuthenticationException(
+                    new OAuth2Error(ResponseCode.USER_VERIFICATION_CODE_INCORRECT.getCode(),
+                            ResponseCode.USER_VERIFICATION_CODE_INCORRECT.getMessage(), ERROR_URI));
         }
         
         // 验证手机号
@@ -113,7 +116,8 @@ public class SmsGrantAuthenticationProvider implements AuthenticationProvider {
         try {
             userDetails = userDetailsService.loadUserByUsername(username);
         } catch (UsernameNotFoundException e) {
-            throw new OAuth2AuthenticationException("手机号不存在");
+            throw new OAuth2AuthenticationException(new OAuth2Error(ResponseCode.USER_ACCOUNT_NOT_FOUND.getCode(),
+                    ResponseCode.USER_ACCOUNT_NOT_FOUND.getMessage(), ERROR_URI));
         }
         
         // 构建一个已认证的对象UsernamePasswordAuthenticationToken
@@ -166,7 +170,7 @@ public class SmsGrantAuthenticationProvider implements AuthenticationProvider {
         // ----- Refresh token -----
         OAuth2RefreshToken refreshToken = null;
         if (registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.REFRESH_TOKEN) &&
-                // Do not issue refresh token to public client
+        // Do not issue refresh token to public client
                 !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
             tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
             OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(tokenContext);
@@ -248,8 +252,7 @@ public class SmsGrantAuthenticationProvider implements AuthenticationProvider {
         return SmsGrantAuthenticationToken.class.isAssignableFrom(authentication);
     }
     
-    static OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(Authentication
-            authentication) {
+    static OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(Authentication authentication) {
         OAuth2ClientAuthenticationToken clientPrincipal = null;
         if (OAuth2ClientAuthenticationToken.class.isAssignableFrom(authentication.getPrincipal().getClass())) {
             clientPrincipal = (OAuth2ClientAuthenticationToken) authentication.getPrincipal();

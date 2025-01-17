@@ -40,7 +40,6 @@ public class SmsGrantAuthenticationConverter implements AuthenticationConverter 
         if (!StringUtils.hasText(smsCode) || parameters.get(SecurityConstants.SMS_VERIFICATION_CODE).size() != 1) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_REQUEST);
         }
-     
         
         // 收集要传入SmsGrantAuthenticationToken构造方法的参数，该参数接下来在SmsGrantAuthenticationProvider中使用
         Map<String, Object> additionalParameters = new HashMap<>();

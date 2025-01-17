@@ -5,6 +5,7 @@ import com.demain.authorization.server.customize.entity.PlatformMenu;
 import com.demain.authorization.server.customize.entity.PlatformUser;
 import com.demain.authorization.server.customize.mapper.PlatformMenuMapper;
 import com.demain.authorization.server.customize.mapper.PlatformUserMapper;
+import com.demain.authorization.server.response.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -39,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .eq(PlatformUser::getEmail, username)
                 .eq(PlatformUser::getIsDelete, 0));
         if (platformUser == null) {
-            throw new UsernameNotFoundException("账号不存在");
+            throw new UsernameNotFoundException(ResponseCode.USER_ACCOUNT_NOT_FOUND.getMessage());
         }
         List<PlatformMenu> platformMenuList = platformMenuMapper.menuListByUserId(platformUser.getId());
         Set<SimpleGrantedAuthority> simpleGrantedAuthorities =

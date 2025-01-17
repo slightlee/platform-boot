@@ -10,6 +10,8 @@ import com.demain.authorization.server.authentication.password.PasswordGrantAuth
 import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationProvider;
 import com.demain.authorization.server.authentication.sms.SmsGrantAuthenticationConverter;
 import com.demain.authorization.server.authentication.sms.SmsGrantAuthenticationProvider;
+import com.demain.authorization.server.handler.CustomAuthenticationFailureHandler;
+import com.demain.authorization.server.handler.CustomeAuthenticationEntryPoint;
 import com.demain.authorization.server.jose.Jwks;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -75,7 +77,7 @@ public class AuthorizationServerConfig {
     private final CustomOidcUserInfoService customOidcUserInfoService;
     
     public AuthorizationServerConfig(UserDetailsService userDetailsService,
-            CustomOidcUserInfoService customOidcUserInfoService) {
+                                     CustomOidcUserInfoService customOidcUserInfoService) {
         this.userDetailsService = userDetailsService;
         this.customOidcUserInfoService = customOidcUserInfoService;
     }
@@ -135,6 +137,9 @@ public class AuthorizationServerConfig {
                                 .authenticationProvider(
                                 new SmsGrantAuthenticationProvider(userDetailsService, 
                                         authorizationService, tokenGenerator)))
+                .tokenEndpoint(tokenEndpoint->{
+                    tokenEndpoint.errorResponseHandler(new CustomAuthenticationFailureHandler());
+                })
     //            .oidc(Customizer.withDefaults()); // 开启 openid connect
                 .oidc(oidcCustomizer-> {
                   oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer -> {
@@ -151,8 +156,10 @@ public class AuthorizationServerConfig {
                     .defaultAuthenticationEntryPointFor(
                         new LoginUrlAuthenticationEntryPoint("/login"),
                         new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-                    ))
-            // 接受用户信息和/或客户注册的访问令牌
+                    )
+                    .authenticationEntryPoint(new CustomeAuthenticationEntryPoint())
+            )
+            // 接受用户信息或客户注册的访问令牌
             .oauth2ResourceServer(resourceServer ->
                 resourceServer
                     .jwt(Customizer.withDefaults()));
@@ -301,7 +308,7 @@ public class AuthorizationServerConfig {
     /**
      * 授权管理服务配置
      *
-     * @param jdbcTemplate               数据源信息
+     * @param jdbcTemplate 数据源信息
      * @param registeredClientRepository 客户端repository
      * @return JdbcOAuth2AuthorizationService
      */
@@ -314,7 +321,7 @@ public class AuthorizationServerConfig {
     /**
      * 授权确认服务配置
      *
-     * @param jdbcTemplate               数据源信息
+     * @param jdbcTemplate 数据源信息
      * @param registeredClientRepository 客户端repository
      * @return JdbcOAuth2AuthorizationConsentService
      */

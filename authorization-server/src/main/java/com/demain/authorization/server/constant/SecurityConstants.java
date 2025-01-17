@@ -32,4 +32,9 @@ public class SecurityConstants {
      * 短信验证码默认值
      */
     public static final String SMS_CODE_VALUE = "6666";
+    
+    /**
+     * 登录地址
+     */
+    public static final String LOGIN_URL = "/login";
 }

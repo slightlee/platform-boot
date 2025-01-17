@@ -35,7 +35,7 @@ public class CustomOidcUserInfoService {
                 .phoneNumber(platformUser.getPhone())
                 .avatar(platformUser.getAvatar())
                 .status(platformUser.getStatus())
-//                .profile("https://www.xxxx.com/")
+                // .profile("https://www.xxxx.com/")
                 .build().getClaims();
     }
 }

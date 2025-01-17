@@ -22,8 +22,8 @@ public class SmsGrantAuthenticationToken extends OAuth2AuthorizationGrantAuthent
     private static final long serialVersionUID = SpringAuthorizationServerVersion.SERIAL_VERSION_UID;
     
     protected SmsGrantAuthenticationToken(
-            Authentication clientPrincipal,
-            @Nullable Map<String, Object> additionalParameters) {
+                                          Authentication clientPrincipal,
+                                          @Nullable Map<String, Object> additionalParameters) {
         super(new AuthorizationGrantType(SecurityConstants.GRANT_TYPE_SMS), clientPrincipal, additionalParameters);
     }
 }
