@@ -21,6 +21,13 @@
       "description": "Whether to enable method security.",
       "defaultValue": true,
       "sourceType": "com.demain.resource.server.autoconfigure.ResourceServerProperties"
+    },
+    {
+      "name": "platform.resource.server.whitelist",
+      "type": "java.lang.String[]",
+      "description": "Whitelist paths that do not require authentication.",
+      "defaultValue": [],
+      "sourceType": "com.demain.resource.server.autoconfigure.ResourceServerProperties"
     }
   ],
   "hints": []

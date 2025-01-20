@@ -1,9 +1,7 @@
 package com.demain.framework.security.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Component
 @ConfigurationProperties(prefix = "platform.resource.server")
 public class ResourceServerProperties {
     
@@ -17,6 +15,10 @@ public class ResourceServerProperties {
      */
     private boolean enableMethodSecurity = true;
     
+    /**
+     * 白名单路径
+     */
+    private String[] whitelist = {};
     
     public boolean isEnabled() {
         return enabled;
@@ -32,5 +34,13 @@ public class ResourceServerProperties {
     
     public void setEnableMethodSecurity(boolean enableMethodSecurity) {
         this.enableMethodSecurity = enableMethodSecurity;
+    }
+    
+    public String[] getWhitelist() {
+        return whitelist;
+    }
+    
+    public void setWhitelist(String[] whitelist) {
+        this.whitelist = whitelist;
     }
 }

@@ -1,6 +1,8 @@
 package com.demain.framework.security.autoconfigure;
 
 import com.demain.framework.security.handler.CustomAccessDeniedHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,6 +23,13 @@ import org.springframework.security.web.SecurityFilterChain;
         matchIfMissing = true)
 public class ResourceServerAutoConfiguration {
     
+    private static final Logger log = LoggerFactory.getLogger(ResourceServerAutoConfiguration.class);
+    
+    private final ResourceServerProperties properties;
+    
+    public ResourceServerAutoConfiguration(ResourceServerProperties properties) {
+        this.properties = properties;
+    }
     
     /**
      * 方法安全配置 灵活配置 @EnableMethodSecurity 等价于 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
@@ -37,9 +46,14 @@ public class ResourceServerAutoConfiguration {
     @ConditionalOnMissingBean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.authorizeHttpRequests(authorize ->
-                authorize.anyRequest().authenticated()
-            )
+        http
+            .authorizeHttpRequests(authorize -> {
+                if (properties.getWhitelist().length > 0) {
+                    log.info("Configuring whitelist paths: {}", String.join(", ", properties.getWhitelist()));
+                    authorize.requestMatchers(properties.getWhitelist()).permitAll();
+                }
+                authorize.anyRequest().authenticated();
+                })
             .oauth2ResourceServer(oauth2 ->
                 oauth2
                     .jwt(Customizer.withDefaults())
