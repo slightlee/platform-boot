@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "platform.resource.server",
+      "type": "com.demain.resource.server.autoconfigure.ResourceServerProperties",
+      "sourceType": "com.demain.resource.server.autoconfigure.ResourceServerProperties",
+      "description": "Resource server configuration properties."
+    }
+  ],
+  "properties": [
+    {
+      "name": "platform.resource.server.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable resource server configuration.",
+      "defaultValue": true,
+      "sourceType": "com.demain.resource.server.autoconfigure.ResourceServerProperties"
+    },
+    {
+      "name": "platform.resource.server.enable-method-security",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable method security.",
+      "defaultValue": true,
+      "sourceType": "com.demain.resource.server.autoconfigure.ResourceServerProperties"
+    }
+  ],
+  "hints": []
+} 

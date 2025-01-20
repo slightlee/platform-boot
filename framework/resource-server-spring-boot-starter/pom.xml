@@ -5,32 +5,36 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.demain.platform</groupId>
-        <artifactId>platform-boot</artifactId>
+        <artifactId>platform-framework</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>platform-resource-server</artifactId>
+    <artifactId>resource-server-spring-boot-starter</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
-    
+
     <dependencies>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.demain.platform</groupId>
-            <artifactId>resource-server-spring-boot-starter</artifactId>
+            <artifactId>platform-security</artifactId>
             <version>${revision}</version>
         </dependency>
-        
     </dependencies>
 
 </project>
