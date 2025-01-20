@@ -1,0 +1,15 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: platform-resource
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://authorization-server:9000   
+          
+logging:
+  level:
+    org.springframework.security: trace
