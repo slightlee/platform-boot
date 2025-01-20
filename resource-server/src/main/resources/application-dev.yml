@@ -20,3 +20,5 @@ platform:
     server:
       enabled: true
       enable-method-security: true
+      whitelist: 
+        - "/messages1"
