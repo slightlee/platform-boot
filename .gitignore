@@ -37,3 +37,6 @@ build/
 
 ### log ###
 log/
+
+### fastRequest ###
+.fastRequest/
