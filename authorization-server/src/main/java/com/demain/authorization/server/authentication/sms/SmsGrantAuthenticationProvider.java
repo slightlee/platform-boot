@@ -1,7 +1,7 @@
 package com.demain.authorization.server.authentication.sms;
 
 import com.demain.authorization.server.constant.SecurityConstants;
-import com.demain.authorization.server.response.ResponseCode;
+import com.demain.framework.security.response.ResponseCode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.AuthenticationProvider;

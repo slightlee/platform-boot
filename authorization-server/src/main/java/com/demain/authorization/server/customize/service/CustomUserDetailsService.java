@@ -5,7 +5,7 @@ import com.demain.authorization.server.customize.entity.PlatformMenu;
 import com.demain.authorization.server.customize.entity.PlatformUser;
 import com.demain.authorization.server.customize.mapper.PlatformMenuMapper;
 import com.demain.authorization.server.customize.mapper.PlatformUserMapper;
-import com.demain.authorization.server.response.ResponseCode;
+import com.demain.framework.security.response.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

@@ -1,4 +1,4 @@
-package com.demain.resource.server.constant;
+package com.demain.framework.security.constant;
 
 /**
  * 常量类

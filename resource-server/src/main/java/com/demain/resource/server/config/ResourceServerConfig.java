@@ -1,6 +1,6 @@
 package com.demain.resource.server.config;
 
-import com.demain.resource.server.handler.CustomAccessDeniedHandler;
+import com.demain.framework.security.handler.CustomAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;

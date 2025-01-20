@@ -10,9 +10,9 @@ import com.demain.authorization.server.authentication.password.PasswordGrantAuth
 import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationProvider;
 import com.demain.authorization.server.authentication.sms.SmsGrantAuthenticationConverter;
 import com.demain.authorization.server.authentication.sms.SmsGrantAuthenticationProvider;
-import com.demain.authorization.server.handler.CustomAuthenticationFailureHandler;
-import com.demain.authorization.server.handler.CustomeAuthenticationEntryPoint;
 import com.demain.authorization.server.jose.Jwks;
+import com.demain.framework.security.handler.CustomAuthenticationFailureHandler;
+import com.demain.framework.security.handler.CustomeAuthenticationEntryPoint;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;

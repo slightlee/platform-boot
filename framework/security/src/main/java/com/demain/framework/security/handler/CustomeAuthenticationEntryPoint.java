@@ -1,8 +1,8 @@
-package com.demain.authorization.server.handler;
+package com.demain.framework.security.handler;
 
-import com.demain.authorization.server.constant.SecurityConstants;
-import com.demain.authorization.server.response.ResponseCode;
-import com.demain.authorization.server.response.ResponseResult;
+import com.demain.framework.security.constant.SecurityConstants;
+import com.demain.framework.security.response.ResponseCode;
+import com.demain.framework.security.response.ResponseResult;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

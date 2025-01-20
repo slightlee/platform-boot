@@ -79,6 +79,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.demain.platform</groupId>
+            <artifactId>platform-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

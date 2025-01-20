@@ -1,7 +1,7 @@
-package com.demain.resource.server.handler;
+package com.demain.framework.security.handler;
 
-import com.demain.resource.server.response.ResponseCode;
-import com.demain.resource.server.response.ResponseResult;
+import com.demain.framework.security.response.ResponseCode;
+import com.demain.framework.security.response.ResponseResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;

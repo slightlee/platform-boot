@@ -1,4 +1,4 @@
-package com.demain.resource.server.response;
+package com.demain.framework.security.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nimbusds.jose.shaded.gson.Gson;
@@ -88,7 +88,7 @@ public class ResponseResult<T> implements Serializable {
      * 构建成功返回对象
      *
      * @param data 返回数据
-     * @param <T> 返回数据类型
+     * @param <T>  返回数据类型
      * @return 返回对象
      */
     public static <T> ResponseResult<T> success(T data) {
@@ -111,7 +111,7 @@ public class ResponseResult<T> implements Serializable {
      * 构建失败返回对象
      *
      * @param message 错误信息
-     * @param <T> 返回数据类型
+     * @param <T>     返回数据类型
      * @return 返回对象
      */
     public static <T> ResponseResult<T> fail(String message) {
@@ -123,8 +123,8 @@ public class ResponseResult<T> implements Serializable {
      * 构建失败返回对象
      *
      * @param errorCode 错误码
-     * @param message 错误信息
-     * @param <T> 返回数据类型
+     * @param message   错误信息
+     * @param <T>       返回数据类型
      * @return 返回对象
      */
     public static <T> ResponseResult<T> fail(String errorCode, String message) {
