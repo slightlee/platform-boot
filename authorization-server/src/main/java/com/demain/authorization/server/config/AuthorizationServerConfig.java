@@ -77,7 +77,7 @@ public class AuthorizationServerConfig {
     private final CustomOidcUserInfoService customOidcUserInfoService;
     
     public AuthorizationServerConfig(UserDetailsService userDetailsService,
-            CustomOidcUserInfoService customOidcUserInfoService) {
+                                     CustomOidcUserInfoService customOidcUserInfoService) {
         this.userDetailsService = userDetailsService;
         this.customOidcUserInfoService = customOidcUserInfoService;
     }
@@ -311,7 +311,7 @@ public class AuthorizationServerConfig {
     /**
      * 授权管理服务配置
      *
-     * @param jdbcTemplate               数据源信息
+     * @param jdbcTemplate 数据源信息
      * @param registeredClientRepository 客户端repository
      * @return JdbcOAuth2AuthorizationService
      */
@@ -324,7 +324,7 @@ public class AuthorizationServerConfig {
     /**
      * 授权确认服务配置
      *
-     * @param jdbcTemplate               数据源信息
+     * @param jdbcTemplate 数据源信息
      * @param registeredClientRepository 客户端repository
      * @return JdbcOAuth2AuthorizationConsentService
      */

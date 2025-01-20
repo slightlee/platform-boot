@@ -23,8 +23,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     // 错误码与自定义响应的映射
     private static final Map<String, ResponseCode> ERROR_CODE_MAPPING = Map.of(
             OAuth2ErrorCodes.INVALID_CLIENT, ResponseCode.INVALID_CLIENT,
-            OAuth2ErrorCodes.UNSUPPORTED_GRANT_TYPE, ResponseCode.UNSUPPORTED_GRANT_TYPE
-    );
+            OAuth2ErrorCodes.UNSUPPORTED_GRANT_TYPE, ResponseCode.UNSUPPORTED_GRANT_TYPE);
     
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
