@@ -16,6 +16,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * 资源服务器自动配置
+ *
+ * @author demain_lee
+ * @since 0.0.1
+ */
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(ResourceServerProperties.class)

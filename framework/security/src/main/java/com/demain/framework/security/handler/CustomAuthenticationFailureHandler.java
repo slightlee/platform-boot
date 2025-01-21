@@ -16,7 +16,7 @@ import java.util.Map;
  * 自定义登录失败处理器
  *
  * @author demain_lee
- * @since 2025/01/16
+ * @since 0.0.1
  */
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
     

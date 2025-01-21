@@ -2,6 +2,12 @@ package com.demain.framework.security.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * 资源服务器配置
+ *
+ * @author demain_lee
+ * @since 0.0.1
+ */
 @ConfigurationProperties(prefix = "platform.resource.server")
 public class ResourceServerProperties {
     

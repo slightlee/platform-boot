@@ -20,7 +20,7 @@ import java.io.IOException;
  * 自定义认证入口点
  *
  * @author demain_lee
- * @since 2025/01/10
+ * @since 0.0.1
  */
 public class CustomeAuthenticationEntryPoint implements AuthenticationEntryPoint {
     
