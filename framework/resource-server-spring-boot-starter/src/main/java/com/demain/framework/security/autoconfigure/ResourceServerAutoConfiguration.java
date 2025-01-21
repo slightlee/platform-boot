@@ -1,8 +1,10 @@
 package com.demain.framework.security.autoconfigure;
 
 import com.demain.framework.security.handler.CustomAccessDeniedHandler;
+import com.demain.framework.security.handler.CustomeAuthenticationEntryPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -14,6 +16,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -61,7 +68,9 @@ public class ResourceServerAutoConfiguration {
             .oauth2ResourceServer(oauth2 ->
                 oauth2
                     .jwt(Customizer.withDefaults())
-                    .accessDeniedHandler(new CustomAccessDeniedHandler()));
+                    .accessDeniedHandler(new CustomAccessDeniedHandler())
+                    .authenticationEntryPoint(new CustomeAuthenticationEntryPoint()) 
+            );
         // @formatter:on
         return http.build();
     }

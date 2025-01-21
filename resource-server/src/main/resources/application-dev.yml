@@ -13,6 +13,7 @@ spring:
 logging:
   level:
     org.springframework.security: trace
+    com.demain.framework.security: DEBUG
 
 
 platform:
