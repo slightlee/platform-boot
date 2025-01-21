@@ -13,6 +13,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -48,18 +49,26 @@ public class ResourceServerAutoConfiguration {
         // @formatter:off
         http
             .authorizeHttpRequests(authorize -> {
-                if (properties.getWhitelist().length > 0) {
-                    log.info("Configuring whitelist paths: {}", String.join(", ", properties.getWhitelist()));
-                    authorize.requestMatchers(properties.getWhitelist()).permitAll();
-                }
+                configureWhitelist(authorize);
                 authorize.anyRequest().authenticated();
-                })
+            })
             .oauth2ResourceServer(oauth2 ->
                 oauth2
                     .jwt(Customizer.withDefaults())
                     .accessDeniedHandler(new CustomAccessDeniedHandler()));
         // @formatter:on
         return http.build();
+    }
+    
+    /**
+     * 配置白名单
+     */
+    private void configureWhitelist(
+            AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorize) {
+        if (properties.getWhitelist().length > 0) {
+            log.info("Configuring whitelist paths: {}", String.join(", ", properties.getWhitelist()));
+            authorize.requestMatchers(properties.getWhitelist()).permitAll();
+        }
     }
     
 }
