@@ -44,7 +44,16 @@
                 <button><img th:src="@{/assets/images/wechat.svg}" alt="WeChat"/></button>
                 <button><img th:src="@{/assets/images/qq.svg}" alt="QQ"/></button>
                 <button><img th:src="@{/assets/images/github.svg}" alt="Github"/></button>
-                <button><img th:src="@{/assets/images/google.svg}" alt="Google"/></button>
+                <button>
+                    <a th:href="@{/oauth2/authorization/google-idp}">
+                        <img th:src="@{/assets/images/google.svg}" alt="Google"/>
+                    </a>
+                </button>
+                <button>
+                    <a th:href="@{/oauth2/authorization/gitee}">
+                        <img th:src="@{/assets/images/gitee.svg}" alt="Gitee"/>
+                    </a>
+                </button>
             </div>
 
             <!-- <div class="signup">

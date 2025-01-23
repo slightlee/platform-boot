@@ -1,5 +1,6 @@
 package com.demain.authorization.server.config;
 
+import com.demain.authorization.server.federation.FederatedIdentityAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -7,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
@@ -30,11 +32,11 @@ public class DefaultSecurityConfig {
                 formLogin
                     .loginPage("/login")
             )
-//            .oauth2Login(oauth2Login ->
-//                oauth2Login
-//                    .loginPage("/login")
-//            )
-
+            .oauth2Login(oauth2Login ->
+                oauth2Login
+                    .loginPage("/login")
+                    .successHandler(authenticationSuccessHandler())
+            )
             .cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
 //            .formLogin(Customizer.withDefaults())
@@ -42,6 +44,10 @@ public class DefaultSecurityConfig {
         ;
         // @formatter:on
         return http.build();
+    }
+    
+    private AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new FederatedIdentityAuthenticationSuccessHandler();
     }
     
     /**

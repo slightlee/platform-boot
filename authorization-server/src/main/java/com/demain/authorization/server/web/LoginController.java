@@ -6,6 +6,7 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class LoginController {
@@ -17,5 +18,11 @@ public class LoginController {
             model.addAttribute("error", exception.getMessage());
         }
         return "login";
+    }
+    
+    @GetMapping("/index")
+    @ResponseBody
+    public String index() {
+        return "index";
     }
 }
