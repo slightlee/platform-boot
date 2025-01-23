@@ -10,6 +10,8 @@ import com.demain.authorization.server.authentication.password.PasswordGrantAuth
 import com.demain.authorization.server.authentication.password.PasswordGrantAuthenticationProvider;
 import com.demain.authorization.server.authentication.sms.SmsGrantAuthenticationConverter;
 import com.demain.authorization.server.authentication.sms.SmsGrantAuthenticationProvider;
+import com.demain.authorization.server.handler.GrantTypeHandler;
+import com.demain.authorization.server.handler.GrantTypeHandlerRegistry;
 import com.demain.authorization.server.jose.Jwks;
 import com.demain.framework.security.handler.CustomAuthenticationFailureHandler;
 import com.demain.framework.security.handler.CustomeAuthenticationEntryPoint;
@@ -26,8 +28,6 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,11 +55,8 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * 授权服务器配置
@@ -76,10 +73,14 @@ public class AuthorizationServerConfig {
     
     private final CustomOidcUserInfoService customOidcUserInfoService;
     
+    private final GrantTypeHandlerRegistry registry;
+    
     public AuthorizationServerConfig(UserDetailsService userDetailsService,
-                                     CustomOidcUserInfoService customOidcUserInfoService) {
+                                     CustomOidcUserInfoService customOidcUserInfoService,
+                                     GrantTypeHandlerRegistry registry) {
         this.userDetailsService = userDetailsService;
         this.customOidcUserInfoService = customOidcUserInfoService;
+        this.registry = registry;
     }
     
     /**
@@ -370,7 +371,7 @@ public class AuthorizationServerConfig {
     @Bean
     OAuth2TokenGenerator<?> tokenGenerator(JWKSource<SecurityContext> jwkSource) {
         JwtGenerator jwtGenerator = new JwtGenerator(new NimbusJwtEncoder(jwkSource));
-        jwtGenerator.setJwtCustomizer(jwtCustomizer());
+        jwtGenerator.setJwtCustomizer(jwtCustomizer(registry));
         OAuth2AccessTokenGenerator accessTokenGenerator = new OAuth2AccessTokenGenerator();
         OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
         return new DelegatingOAuth2TokenGenerator(
@@ -378,34 +379,23 @@ public class AuthorizationServerConfig {
     }
     
     @Bean
-    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(GrantTypeHandlerRegistry registry) {
         
         return context -> {
             JwtClaimsSet.Builder claims = context.getClaims();
-            UserDetails userDetails = userDetailsService.loadUserByUsername(context.getPrincipal().getName());
             if (context.getTokenType().equals(OAuth2TokenType.ACCESS_TOKEN)) {
                 // Customize headers/claims for access_token
-                claims.claims(claimsConsumer -> {
-                    claimsConsumer.merge("scope", userDetails.getAuthorities(), (scope, authorities) -> {
-                        Set<String> scopeSet = (Set<String>) scope;
-                        Set<String> cloneSet = scopeSet.stream().map(String::new).collect(Collectors.toSet());
-                        Collection<SimpleGrantedAuthority> simpleGrantedAuthorities =
-                                (Collection<SimpleGrantedAuthority>) authorities;
-                        simpleGrantedAuthorities.forEach(simpleGrantedAuthority -> {
-                            if (!cloneSet.contains(simpleGrantedAuthority.getAuthority())) {
-                                cloneSet.add(simpleGrantedAuthority.getAuthority());
-                            }
-                        });
-                        return cloneSet;
-                    });
-                });
-                
+                String grantType = context.getAuthorizationGrantType().getValue();
+                GrantTypeHandler handler = registry.getHandler(grantType);
+                if (handler != null) {
+                    handler.handle(context, claims);
+                }
             } else if (context.getTokenType().getValue().equals(OidcParameterNames.ID_TOKEN)) {
                 // Customize headers/claims for id_token
                 claims.claim(IdTokenClaimNames.AUTH_TIME, Date.from(Instant.now()));
                 StandardSessionIdGenerator standardSessionIdGenerator = new StandardSessionIdGenerator();
                 claims.claim("sid", standardSessionIdGenerator.generateSessionId());
-                claims.claim("username", userDetails.getUsername());
+                claims.claim("username", context.getPrincipal().getName());
             }
         };
     }

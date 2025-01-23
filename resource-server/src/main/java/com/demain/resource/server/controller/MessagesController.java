@@ -24,4 +24,9 @@ public class MessagesController {
         return " hello Message 3";
     }
     
+    @GetMapping("/messages11")
+    public String getMessages11() {
+        return " hello Message 11";
+    }
+    
 }
