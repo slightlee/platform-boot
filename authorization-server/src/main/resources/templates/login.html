@@ -43,7 +43,11 @@
                 <p>其他登录方式</p>
                 <button><img th:src="@{/assets/images/wechat.svg}" alt="WeChat"/></button>
                 <button><img th:src="@{/assets/images/qq.svg}" alt="QQ"/></button>
-                <button><img th:src="@{/assets/images/github.svg}" alt="Github"/></button>
+                <button>
+                    <a th:href="@{/oauth2/authorization/github-idp}">
+                        <img th:src="@{/assets/images/github.svg}" alt="Github"/>
+                    </a>
+                </button>
                 <button>
                     <a th:href="@{/oauth2/authorization/google-idp}">
                         <img th:src="@{/assets/images/google.svg}" alt="Google"/>
