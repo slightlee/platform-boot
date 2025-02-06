@@ -38,12 +38,13 @@ spring:
             scope: user:email, read:user
             client-name: Sign in with GitHub
           gitee:
+            # 参考 org.springframework.security.config.oauth2.client.CommonOAuth2Provider
             provider: gitee
             client-name: Sign in with Gitee
             authorization-grant-type: authorization_code
             client-id: ${GITEE_CLIENT_ID:gitee-client-id}
             client-secret: ${GITEE_CLIENT_SECRET:gitee-client-secret}
-            redirect-uri: http://127.0.0.1:9000/login/oauth2/code/gitee
+            redirect-uri: http://127.0.0.1:9000/login/oauth2/code/gitee  
             scope: emails, user_info
         provider:
           google:
