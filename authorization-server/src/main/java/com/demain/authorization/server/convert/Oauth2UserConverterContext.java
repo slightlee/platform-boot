@@ -60,6 +60,7 @@ public class Oauth2UserConverterContext {
         return switch (registrationId) {
             case "github-idp" -> new GithubUserConvert();
             case "gitee" -> new GiteeUserConvert();
+            case "linux-do" -> new LinuxDoUserConvert();
             default -> throw new IllegalStateException("Unexpected value: " + registrationId);
         };
         

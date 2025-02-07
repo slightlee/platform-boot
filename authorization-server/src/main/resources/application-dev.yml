@@ -46,6 +46,14 @@ spring:
             client-secret: ${GITEE_CLIENT_SECRET:gitee-client-secret}
             redirect-uri: http://127.0.0.1:9000/login/oauth2/code/gitee  
             scope: emails, user_info
+          linux-do:
+            provider: linux-do
+            client-name: Sign in with Linux Do
+            authorization-grant-type: authorization_code
+            client-id: k2eCp83nWcg35aVxTa9GTd93VpMNRdqI
+            client-secret: wy9MHTolfbfjvQTWl2su5XZuiyeVptvv
+            redirect-uri: http://127.0.0.1:9000/login/oauth2/code/linux-do
+            scope: user_info
         provider:
           google:
             user-name-attribute: email
@@ -60,6 +68,11 @@ spring:
             token-uri: https://gitee.com/oauth/token
             # 发起授权申请的地址
             authorization-uri: https://gitee.com/oauth/authorize
+          linux-do:
+            user-name-attribute: name
+            user-info-uri: https://connect.linux.do/api/user
+            token-uri: https://connect.linux.do/oauth2/token
+            authorization-uri: https://connect.linux.do/oauth2/authorize
 
 
 #logging:

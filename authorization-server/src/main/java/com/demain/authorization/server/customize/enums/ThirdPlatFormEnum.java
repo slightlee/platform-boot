@@ -8,5 +8,6 @@ package com.demain.authorization.server.customize.enums;
  */
 public enum ThirdPlatFormEnum {
     GITEE,
-    GITHUB;
+    GITHUB,
+    LINUX_DO;
 }

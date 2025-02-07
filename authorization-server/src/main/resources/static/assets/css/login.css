@@ -156,16 +156,17 @@ body {
 
 .social-login {
   margin-top: 20px;
+  /*text-align: center;*/
+}
+
+.social-login p {
+  font-size: 14px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
-/* .social-login p {
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-*/
 .social-login button {
-  margin: 0 5px;
+  margin: 5px 5px;
   background-color: #ffffff;
   border: 1px solid #ccc;
   cursor: pointer;
