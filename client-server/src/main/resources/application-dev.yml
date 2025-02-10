@@ -1,0 +1,37 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: platform-client
+  security:
+    oauth2:
+      client:
+        registration:
+          uaa:
+            provider: uaa
+            client-id: client-server
+            client-secret: 123456
+            client-name: client-server-oidc
+            authorization-grant-type: authorization_code
+            redirect-uri: http://client-server:9003/login/oauth2/code/uaa
+            scope:
+              - profile
+              - openid
+        provider:
+          uaa:
+            # 手动配置端点 (可解决认证服务未启动情况下服务报错 Unable to resolve Configuration with the provided Issuer of "http://authorization-server:9000" 问题)
+#            user-name-attribute: sub
+#            user-info-uri: http://authorization-server:9000/userinfo
+#            token-uri: http://authorization-server:9000/oauth2/token
+#            authorization-uri: http://authorization-server:9000/oauth2/authorize
+#            jwk-set-uri: http://authorization-server:9000/oauth2/jwks
+            # OIDC提供商 支持服务发现 提供 .well-known/openid-configuration 可以使用 issuer-uri
+            # 纯OAuth2提供商（如 Gitee）: 不支持服务发现 需要手动配置所有端点 不能使用 issuer-uri
+            issuer-uri: http://authorization-server:9000
+          
+logging:
+  level:
+    org.springframework.security: trace
+    com.demain.framework.security: DEBUG
+

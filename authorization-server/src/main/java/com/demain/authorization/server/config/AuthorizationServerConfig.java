@@ -144,15 +144,15 @@ public class AuthorizationServerConfig {
                 .clientAuthentication(clientAuthentication -> {
                     clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler());
                 })
-    //            .oidc(Customizer.withDefaults()); // 开启 openid connect
-                .oidc(oidcCustomizer-> {
-                  oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer -> {
-                    userInfoEndpointCustomizer.userInfoRequestConverter(
-                            new CustomOidcUserInfoAuthenticationConverter(customOidcUserInfoService));
-                    userInfoEndpointCustomizer.authenticationProvider(
-                            new CustomOidcUserInfoAuthenticationProvider(authorizationService));
-                  });
-            });
+                .oidc(Customizer.withDefaults()); // 开启 openid connect
+//                .oidc(oidcCustomizer-> {
+//                  oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer -> {
+//                    userInfoEndpointCustomizer.userInfoRequestConverter(
+//                            new CustomOidcUserInfoAuthenticationConverter(customOidcUserInfoService));
+//                    userInfoEndpointCustomizer.authenticationProvider(
+//                            new CustomOidcUserInfoAuthenticationProvider(authorizationService));
+//                  });
+//                });
         //  未通过授权端点验证时重定向到登录页面
         http
             .exceptionHandling(exception ->
@@ -303,6 +303,24 @@ public class AuthorizationServerConfig {
         RegisteredClient smsCodeRegisteredClient = clientRepository.findByClientId(smsCodeClient.getClientId());
         if (smsCodeRegisteredClient == null) {
             clientRepository.save(smsCodeClient);
+        }
+        
+        RegisteredClient clientServer = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("client-server")  // 与 client-server 的配置匹配
+                .clientSecret(passwordEncoder.encode("123456"))  // 与 client-server 的配置匹配
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("http://client-server:9003/login/oauth2/code/uaa")  // 与 client-server 的配置匹配
+                .scope("profile")
+                .scope("openid")
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofHours(2)).build())
+                .build();
+        
+        RegisteredClient clientServerRegisteredClient = clientRepository.findByClientId(clientServer.getClientId());
+        if (clientServerRegisteredClient == null) {
+            clientRepository.save(clientServer);
         }
         
         // @formatter:on
